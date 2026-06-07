@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build STR Wealth — Market Intelligence Hub</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #0f2244;
+    --blue: #1a4a8a;
+    --accent: #e8a020;
+    --accent2: #f5c842;
+    --green: #15803d;
+    --teal: #0d7a6e;
+    --red: #b91c1c;
+    --amber: #b45309;
+    --purple: #7c3aed;
+    --gray: #374151;
+    --lgray: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f1f5f9;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--gray);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, #050e1f 0%, var(--navy) 40%, #0d2050 70%, #061535 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(232,160,32,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,74,138,0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,160,32,0.12);
+    border: 1px solid rgba(232,160,32,0.25);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    color: white;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--accent2); }
+
+  .hero p {
+    font-size: clamp(14px, 2vw, 18px);
+    color: rgba(255,255,255,0.6);
+    max-width: 600px;
+    margin-bottom: 36px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .hs-val {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .hero-stat .hs-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+
+  .divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    align-self: center;
+  }
+
+  /* ── BUY BOX STRIP ── */
+  .buybox-strip {
+    background: rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .buybox-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .bb-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .bb-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .bb-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--lgray);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── MARKET CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .market-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+
+  .market-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+  }
+
+  /* Card header bands */
+  .card-header {
+    padding: 28px 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header.cocoa  { background: linear-gradient(135deg, #0a1628, #0d2a5e); }
+  .card-header.gulf   { background: linear-gradient(135deg, #0a1f1a, #0d4a3a); }
+  .card-header.mansfield { background: linear-gradient(135deg, #1a0a28, #3a0d5e); }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+
+  .card-header.cocoa::before   { background: radial-gradient(#e8a020, transparent); }
+  .card-header.gulf::before    { background: radial-gradient(#34d399, transparent); }
+  .card-header.mansfield::before { background: radial-gradient(#a78bfa, transparent); }
+
+  .card-location {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Score ring */
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .score-ring {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .score-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .score-ring-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.1);
+    stroke-width: 6;
+  }
+
+  .score-ring-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+  }
+
+  .score-ring-fill.cocoa    { stroke: #f5c842; }
+  .score-ring-fill.gulf     { stroke: #34d399; }
+  .score-ring-fill.mansfield { stroke: #a78bfa; }
+
+  .score-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-ring-num {
+    font-size: 18px;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+  }
+
+  .score-ring-denom {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .score-meta {
+    flex: 1;
+  }
+
+  .tier-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .tier-b  { background: rgba(245,200,66,0.2); color: #f5c842; }
+  .tier-c  { background: rgba(52,211,153,0.2); color: #34d399; }
+  .tier-cp { background: rgba(167,139,250,0.2); color: #a78bfa; }
+
+  .score-verdict {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  /* Card body */
+  .card-body {
+    padding: 24px 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .metric-pill {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .metric-pill .mp-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--lgray);
+    margin-bottom: 3px;
+  }
+
+  .metric-pill .mp-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .metric-pill .mp-sub {
+    font-size: 11px;
+    color: var(--lgray);
+  }
+
+  /* Key insight */
+  .key-insight {
+    background: #f8faff;
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--gray);
+  }
+
+  .key-insight.cocoa    { border-color: #e8a020; background: #fffbf0; }
+  .key-insight.gulf     { border-color: #059669; background: #f0fdf7; }
+  .key-insight.mansfield { border-color: #7c3aed; background: #faf5ff; }
+
+  /* Tags row */
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+
+  .tag.green  { background: #dcfce7; color: #15803d; }
+  .tag.amber  { background: #fef9c3; color: #854d0e; }
+  .tag.red    { background: #fee2e2; color: #991b1b; }
+  .tag.blue   { background: #dbeafe; color: #1e40af; }
+  .tag.purple { background: #ede9fe; color: #7c3aed; }
+
+  /* CTA button */
+  .card-cta {
+    padding: 0 28px 24px;
+  }
+
+  .cta-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .cta-btn:hover { opacity: 0.88; transform: scale(0.99); }
+
+  .cta-btn.cocoa    { background: linear-gradient(135deg, #0a1628, #1a4a8a); color: #f5c842; }
+  .cta-btn.gulf     { background: linear-gradient(135deg, #0a1f1a, #065f46); color: #34d399; }
+  .cta-btn.mansfield { background: linear-gradient(135deg, #1a0a28, #4c1d95); color: #a78bfa; }
+  .cta-btn.disabled { background: #f3f4f6; color: #9ca3af; cursor: default; }
+  .cta-btn.disabled:hover { opacity: 1; transform: none; }
+
+  /* Status dot */
+  .status-dot {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(0,0,0,0.3);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .status-dot.live  { color: #86efac; }
+  .status-dot.pdf   { color: #fde68a; }
+  .status-dot.soon  { color: #c4b5fd; }
+
+  .dot-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot.live .dot-pulse  { background: #22c55e; animation: pulse 2s infinite; }
+  .status-dot.pdf .dot-pulse   { background: #f59e0b; }
+  .status-dot.soon .dot-pulse  { background: #8b5cf6; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .comparison-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    margin-bottom: 48px;
+  }
+
+  .comparison-header {
+    background: var(--navy);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .comparison-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .comparison-header p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .comp-table thead tr { background: #f8fafc; }
+  .comp-table th {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--lgray);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comp-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+  }
+
+  .comp-table tr:last-child td { border-bottom: none; }
+
+  .comp-table tr:hover td { background: #fafbff; }
+
+  .market-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .mni {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .mni.cocoa    { background: #eff6ff; }
+  .mni.gulf     { background: #f0fdf4; }
+  .mni.mansfield { background: #faf5ff; }
+
+  .score-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .sp-gold   { background: #fef9c3; color: #92400e; }
+  .sp-green  { background: #dcfce7; color: #15803d; }
+  .sp-purple { background: #ede9fe; color: #6d28d9; }
+
+  .winner-cell { color: var(--green); font-weight: 700; }
+  .loser-cell  { color: var(--lgray); }
+
+  /* ── QUICK ACTIONS ── */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .action-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .action-icon.gold   { background: #fef9c3; }
+  .action-icon.green  { background: #dcfce7; }
+  .action-icon.blue   { background: #dbeafe; }
+  .action-icon.red    { background: #fee2e2; }
+
+  .action-body h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .action-body p  { font-size: 12px; color: var(--lgray); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  .hub-footer {
+    background: var(--navy);
+    padding: 32px 24px;
+    text-align: center;
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 20px;
+  }
+
+  .hub-footer strong { color: rgba(255,255,255,0.6); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 36px 16px 32px; }
+    .main { padding: 24px 16px 40px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; }
+    .divider { display: none; }
+    .card-body { padding: 18px 20px; }
+    .card-cta { padding: 0 20px 20px; }
+    .card-header { padding: 22px 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      📊 Build STR Wealth · Private Intelligence
+    </div>
+    <h1>Market Intelligence<br><span>Hub</span></h1>
+    <p>Three scouted markets. One buy box. All the data you need to make the call.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hs-val">3</span>
+        <span class="hs-label">Markets Scouted</span>
+      </div>
+      <div class="divider"></div>
+      <div class="hero-stat">
+        <span class="hs-val">$500K–$750K</span>
+        <span class="hs-label">Buy Box Budget</span>
+      </div>
+      <div class="divider"></div>
+      <div class="hero-stat">
+        <span class="hs-val">$30K+</span>
+        <span class="hs-label">Target Net CF / Yr</span>
+      </div>
+      <div class="divider"></div>
+      <div class="hero-stat">
+        <span class="hs-val">DSCR · 20%</span>
+        <span class="hs-label">Loan Type</span>
+      </div>
+      <div class="divider"></div>
+      <div class="hero-stat">
+        <span class="hs-val">Total Return</span>
+        <span class="hs-label">Investment Thesis</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="buybox-strip">
+    <div class="buybox-inner">
+      <span class="bb-label">Buy Box</span>
+      <span class="bb-item"><span class="bb-dot"></span>3+ Bed · 2+ Bath</span>
+      <span class="bb-item"><span class="bb-dot"></span>Cash: $250K+</span>
+      <span class="bb-item"><span class="bb-dot"></span>24% Tax Bracket</span>
+      <span class="bb-item"><span class="bb-dot"></span>OBBBA 100% Bonus Dep</span>
+      <span class="bb-item"><span class="bb-dot"></span>STR Only (No LTR)</span>
+      <span class="bb-item"><span class="bb-dot"></span>Total Return: CF + Appreciation + Tax</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ MAIN ══════ -->
+<div class="main">
+
+  <!-- Market Cards -->
+  <div class="section-label">Scout Reports</div>
+  <div class="cards-grid">
+
+    <!-- ── COCOA BEACH ── -->
+    <div class="market-card">
+      <div class="card-header cocoa">
+        <div class="status-dot live">
+          <div class="dot-pulse"></div>
+          Live Report
+        </div>
+        <div class="card-location">Brevard County · Florida</div>
+        <div class="card-title">Cocoa Beach, FL</div>
+        <div class="card-subtitle">Space Coast STR · Short-Term Rental</div>
+        <div class="score-row">
+          <div class="score-ring">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle class="score-ring-bg" cx="36" cy="36" r="28"/>
+              <!-- 7.32/10 = 73.2% of 175.9 (circumference) = 128.8 -->
+              <circle class="score-ring-fill cocoa" cx="36" cy="36" r="28"
+                stroke-dasharray="175.9"
+                stroke-dashoffset="47.2"/>
+            </svg>
+            <div class="score-ring-text">
+              <span class="score-ring-num">7.32</span>
+              <span class="score-ring-denom">/10</span>
+            </div>
+          </div>
+          <div class="score-meta">
+            <div class="tier-badge tier-b">Tier C+ High</div>
+            <div class="score-verdict">Highest score of 3 markets.<br>Best Total Return thesis.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="metrics-grid">
+          <div class="metric-pill">
+            <div class="mp-label">Avg STR Revenue</div>
+            <div class="mp-val">$63K</div>
+            <div class="mp-sub">All properties</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">4BR Top-25%</div>
+            <div class="mp-val">$100K–$120K</div>
+            <div class="mp-sub">Annual gross</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">SFH Appreciation</div>
+            <div class="mp-val">+27% YoY</div>
+            <div class="mp-sub">2025–2026</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Y1 Total Return</div>
+            <div class="mp-val">78–106%</div>
+            <div class="mp-sub">On cash deployed</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Primary Lane</div>
+            <div class="mp-val">$620K–$700K</div>
+            <div class="mp-sub">4BR beachside pool</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Space Launches</div>
+            <div class="mp-val">109 in 2025</div>
+            <div class="mp-sub">120+ projected 2026</div>
+          </div>
+        </div>
+
+        <div class="key-insight cocoa">
+          <strong>Why it wins:</strong> Only beach market in the U.S. where rocket launches drive STR demand. SFH up +27% YoY. OBBBA bonus dep + appreciation = $104K–$142K Year-1 Total Return on $134K deployed.
+        </div>
+
+        <div class="tags-row">
+          <span class="tag green">✓ STR Legal (tourist zone)</span>
+          <span class="tag amber">⚠ Verify A1A zoning</span>
+          <span class="tag red">✗ Avoid Cape Canaveral</span>
+          <span class="tag red">✗ Avoid Merritt Island</span>
+          <span class="tag blue">11% lodging tax</span>
+        </div>
+      </div>
+
+      <div class="card-cta">
+        <a href="cocoa-beach-fl-market-scout.html" class="cta-btn cocoa">
+          Open Full Report →
+        </a>
+      </div>
+    </div>
+
+    <!-- ── GULF SHORES ── -->
+    <div class="market-card">
+      <div class="card-header gulf">
+        <div class="status-dot pdf">
+          <div class="dot-pulse"></div>
+          PDF Report
+        </div>
+        <div class="card-location">Baldwin County · Alabama</div>
+        <div class="card-title">Gulf Shores, AL</div>
+        <div class="card-subtitle">Gulf Coast STR · Short-Term Rental</div>
+        <div class="score-row">
+          <div class="score-ring">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle class="score-ring-bg" cx="36" cy="36" r="28"/>
+              <!-- 6.73/10 = 67.3% of 175.9 = 118.4 -->
+              <circle class="score-ring-fill gulf" cx="36" cy="36" r="28"
+                stroke-dasharray="175.9"
+                stroke-dashoffset="57.5"/>
+            </svg>
+            <div class="score-ring-text">
+              <span class="score-ring-num">6.73</span>
+              <span class="score-ring-denom">/10</span>
+            </div>
+          </div>
+          <div class="score-meta">
+            <div class="tier-badge tier-c">Tier C Selective</div>
+            <div class="score-verdict">World-class demand.<br>Execution risk is real.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="metrics-grid">
+          <div class="metric-pill">
+            <div class="mp-label">5BR Top-Q Revenue</div>
+            <div class="mp-val">$140K–$165K</div>
+            <div class="mp-sub">Annual gross</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Lodging Revenue</div>
+            <div class="mp-val">$923M</div>
+            <div class="mp-sub">2025 record</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Annual Visitors</div>
+            <div class="mp-val">6.5M</div>
+            <div class="mp-sub">12–14M drive market</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Y1 Total Return</div>
+            <div class="mp-val">~49%</div>
+            <div class="mp-sub">On $167K deployed</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Primary Lane</div>
+            <div class="mp-val">$645K</div>
+            <div class="mp-sub">5BR near-beach + pool</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Dead Season</div>
+            <div class="mp-val">4 months</div>
+            <div class="mp-sub">Jan–Mar critical</div>
+          </div>
+        </div>
+
+        <div class="key-insight gulf">
+          <strong>The challenge:</strong> $923M lodging record and 6.5M visitors are exceptional, but 4-month dead season + $13K–$25K coastal insurance + R-zone STR ban kills deals. Fort Morgan Peninsula (county-only) is the safest lane.
+        </div>
+
+        <div class="tags-row">
+          <span class="tag red">✗ R-1–R-5 zones: STR banned</span>
+          <span class="tag amber">⚠ OB 180-day rule</span>
+          <span class="tag green">✓ Fort Morgan: county-only</span>
+          <span class="tag blue">16% lodging tax (city)</span>
+          <span class="tag green">6% Fort Morgan</span>
+        </div>
+      </div>
+
+      <div class="card-cta">
+        <a href="gulf-shores-al-market-scout.html" class="cta-btn gulf">
+          Open Full Report →
+        </a>
+      </div>
+    </div>
+
+    <!-- ── MANSFIELD ── -->
+    <div class="market-card">
+      <div class="card-header mansfield">
+        <div class="status-dot soon">
+          <div class="dot-pulse"></div>
+          Coming Soon
+        </div>
+        <div class="card-location">Tarrant County · Texas</div>
+        <div class="card-title">Mansfield, TX</div>
+        <div class="card-subtitle">DFW Suburb · Mid-Term Rental / STR</div>
+        <div class="score-row">
+          <div class="score-ring">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle class="score-ring-bg" cx="36" cy="36" r="28"/>
+              <!-- placeholder ~6.5/10 = 65% of 175.9 = 114.3 -->
+              <circle class="score-ring-fill mansfield" cx="36" cy="36" r="28"
+                stroke-dasharray="175.9"
+                stroke-dashoffset="61.6"/>
+            </svg>
+            <div class="score-ring-text">
+              <span class="score-ring-num" style="font-size:14px;">–/10</span>
+            </div>
+          </div>
+          <div class="score-meta">
+            <div class="tier-badge tier-cp">Score TBD</div>
+            <div class="score-verdict">Full HTML report<br>coming soon.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="metrics-grid">
+          <div class="metric-pill">
+            <div class="mp-label">Market Type</div>
+            <div class="mp-val">DFW Suburb</div>
+            <div class="mp-sub">30 min to Dallas</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Strategy</div>
+            <div class="mp-val">MTR + STR</div>
+            <div class="mp-sub">Corporate demand</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">State Income Tax</div>
+            <div class="mp-val">0%</div>
+            <div class="mp-sub">Texas — no state tax</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Insurance Risk</div>
+            <div class="mp-val">Low</div>
+            <div class="mp-sub">No coastal exposure</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">HOA Risk</div>
+            <div class="mp-val">High</div>
+            <div class="mp-sub">Verify STR rules</div>
+          </div>
+          <div class="metric-pill">
+            <div class="mp-label">Appreciation</div>
+            <div class="mp-val">Moderate</div>
+            <div class="mp-sub">DFW metro growth</div>
+          </div>
+        </div>
+
+        <div class="key-insight mansfield">
+          <strong>The thesis:</strong> Low-risk CF play with no coastal insurance, no state income tax, and strong corporate/relocation rental demand from DFW job market. Pure CF rather than appreciation-led Total Return.
+        </div>
+
+        <div class="tags-row">
+          <span class="tag purple">MTR Corp Demand</span>
+          <span class="tag green">✓ No State Tax</span>
+          <span class="tag amber">⚠ HOA verification critical</span>
+          <span class="tag green">Low Insurance</span>
+        </div>
+      </div>
+
+      <div class="card-cta">
+        <a href="mansfield-tx-market-scout.html" class="cta-btn mansfield">
+          Open Full Report →
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="section-label">Head-to-Head Comparison</div>
+  <div class="comparison-card">
+    <div class="comparison-header">
+      <div>
+        <h3>Market Scorecard — All Three Scouts</h3>
+        <p>Same buy box · Same thesis · Data decides</p>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Market</th>
+          <th>Score</th>
+          <th>Tier</th>
+          <th>Best Config</th>
+          <th>Avg STR Rev</th>
+          <th>SFH Appreciation</th>
+          <th>Insurance Risk</th>
+          <th>Reg Risk</th>
+          <th>Total Return Thesis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="market-name-cell">
+              <div class="mni cocoa">🏖</div>
+              <div>
+                <div>Cocoa Beach, FL</div>
+                <div style="font-size:11px;font-weight:400;color:var(--lgray);">Space Coast</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="score-pill sp-gold">7.32</span></td>
+          <td>C+ High</td>
+          <td>4BR beachside pool<br><span style="font-size:11px;color:var(--lgray);">$620K–$700K</span></td>
+          <td class="winner-cell">$63K avg<br>$105K+ (4BR TQ)</td>
+          <td class="winner-cell">+27% YoY ★</td>
+          <td style="color:var(--amber);">High (coastal)</td>
+          <td style="color:var(--amber);">Zoning critical</td>
+          <td><strong>Strongest</strong><br><span style="font-size:11px;color:var(--lgray);">CF + OBBBA + Appreciation</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="market-name-cell">
+              <div class="mni gulf">🌊</div>
+              <div>
+                <div>Gulf Shores, AL</div>
+                <div style="font-size:11px;font-weight:400;color:var(--lgray);">Gulf Coast</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="score-pill sp-green">6.73</span></td>
+          <td>C Selective</td>
+          <td>5BR near-beach + pool<br><span style="font-size:11px;color:var(--lgray);">$645K (primary)</span></td>
+          <td>$140K–$165K<br><span style="font-size:11px;color:var(--lgray);">(5BR top-Q)</span></td>
+          <td class="loser-cell">+2–4% YoY</td>
+          <td style="color:var(--red);">Very High</td>
+          <td style="color:var(--red);">Zone complex</td>
+          <td>Highest raw CF<br><span style="font-size:11px;color:var(--lgray);">Limited appreciation</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="market-name-cell">
+              <div class="mni mansfield">🏘</div>
+              <div>
+                <div>Mansfield, TX</div>
+                <div style="font-size:11px;font-weight:400;color:var(--lgray);">DFW Suburb</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="score-pill sp-purple">TBD</span></td>
+          <td>TBD</td>
+          <td>3BR+ SFH or duplex<br><span style="font-size:11px;color:var(--lgray);">MTR + STR</span></td>
+          <td class="loser-cell">Lower<br><span style="font-size:11px;">(MTR/STR mix)</span></td>
+          <td class="loser-cell">Moderate</td>
+          <td class="winner-cell">Low ★</td>
+          <td class="winner-cell">Low ★</td>
+          <td>CF-only play<br><span style="font-size:11px;color:var(--lgray);">No coastal risk</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="section-label">Critical Reminders</div>
+  <div class="quick-actions">
+    <div class="action-card">
+      <div class="action-icon gold">⚡</div>
+      <div class="action-body">
+        <h4>Get Insurance Quotes First</h4>
+        <p>For any Florida or Gulf Coast property. Coastal insurance runs $12K–$25K/yr — always get actual quotes before any offer. Never trust the "35% OpEx" rule.</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-icon green">🗺</div>
+      <div class="action-body">
+        <h4>Verify Zoning in Writing</h4>
+        <p>Cocoa Beach: call (321) 868-3238. Gulf Shores: call (251) 968-2425. Get a written zoning letter confirming STR is a permitted use before submitting any offer.</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-icon blue">📊</div>
+      <div class="action-body">
+        <h4>Pull AirDNA Comps</h4>
+        <p>Run AirDNA MarketMinder or Rabbu on any specific address before offering. Trailing 12-month gross revenue for comparable active listings validates every pro forma.</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-icon red">🏦</div>
+      <div class="action-body">
+        <h4>Confirm DSCR Lender Math</h4>
+        <p>Ask exactly how they calculate DSCR for STRs. Florida insurance can fail DSCR qualification. Lock a pre-approval before making an offer — not after.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="hub-footer">
+  <strong>Build STR Wealth · Market Intelligence Hub</strong><br>
+  Gene Lawhun · Private Investor Dashboard · June 2026<br>
+  <span style="font-size:11px;">Cocoa Beach 7.32/10 · Gulf Shores 6.73/10 · Mansfield TBD · Buy Box: $500K–$750K · Target CF: $30K+/yr · DSCR 20% · Total Return Thesis</span>
+</div>
+
+</body>
+</html>
