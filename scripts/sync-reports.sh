@@ -13,7 +13,7 @@ git -C "$REPO_DIR" pull --ff-only origin claude/cocoa-beach-market-scout-mxIik 2
 # Copy all scout HTMLs
 cp "$REPO_DIR/index.html" "$SCOUT_DIR/"
 [ -f "$REPO_DIR/cocoa-beach-fl-market-scout.html" ] && cp "$REPO_DIR/cocoa-beach-fl-market-scout.html" "$SCOUT_DIR/"
-[ -f "$REPO_DIR/gulf-shores-al-market-scout.html" ]  && cp "$REPO_DIR/gulf-shores-al-market-scout.html"  "$SCOUT_DIR/"
-[ -f "$REPO_DIR/mansfield-tx-market-scout.html" ]    && cp "$REPO_DIR/mansfield-tx-market-scout.html"    "$SCOUT_DIR/"
+[ -f "$REPO_DIR/gulf-shores-scout-dashboard.html" ]  && cp "$REPO_DIR/gulf-shores-scout-dashboard.html"  "$SCOUT_DIR/"
+[ -f "$REPO_DIR/scout-dashboard.html" ]              && cp "$REPO_DIR/scout-dashboard.html"               "$SCOUT_DIR/"
 
 echo "[$(date)] Sync complete. Serving dir: $SCOUT_DIR"
