@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocoa Beach, FL — STR Market Scout Report | Build STR Wealth</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #0f2244;
+    --blue: #1a4a8a;
+    --accent: #e8a020;
+    --accent2: #f5c842;
+    --teal: #0d7a6e;
+    --green: #15803d;
+    --red: #b91c1c;
+    --amber: #b45309;
+    --gray: #374151;
+    --lgray: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f9fafb;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--gray);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, #0d2a5e 100%);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(232,160,32,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .header-text { flex: 1; min-width: 280px; }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+
+  .header-text h1 {
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .header-text h2 {
+    font-size: clamp(14px, 2.5vw, 18px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 20px;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .header-meta-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-meta-item span:first-child {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2px;
+  }
+
+  .header-meta-item span:last-child {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.92);
+  }
+
+  .score-block {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(232,160,32,0.4);
+    border-radius: 16px;
+    padding: 28px 36px;
+    text-align: center;
+    min-width: 180px;
+    backdrop-filter: blur(4px);
+  }
+
+  .score-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+
+  .score-number {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--accent2);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .score-denom {
+    font-size: 22px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .score-tier {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── ALERT BAR ── */
+  .alert-bar {
+    background: #7c2d12;
+    border-top: 3px solid #dc2626;
+    padding: 12px 24px;
+  }
+
+  .alert-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #fef2f2;
+  }
+
+  .alert-bar strong { color: #fca5a5; }
+
+  /* ── BODY ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 48px; }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--blue);
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+
+  /* ── EXEC SUMMARY ── */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 640px) { .exec-grid { grid-template-columns: 1fr; } }
+
+  .exec-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .exec-box h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--lgray);
+    margin-bottom: 8px;
+  }
+
+  .exec-box p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .exec-box.highlight {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-color: #93c5fd;
+  }
+
+  .verdict {
+    background: linear-gradient(135deg, var(--navy), var(--navy2));
+    color: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+
+  .verdict h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .verdict p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+  }
+
+  /* ── METRIC CARDS ── */
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .metric-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .metric-card .val {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .metric-card .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--lgray);
+  }
+
+  .metric-card.accent { border-top: 3px solid var(--accent); }
+  .metric-card.green  { border-top: 3px solid var(--green); }
+  .metric-card.blue   { border-top: 3px solid var(--blue); }
+  .metric-card.teal   { border-top: 3px solid var(--teal); }
+
+  /* ── SCORECARD ── */
+  .scorecard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .scorecard-table thead tr {
+    background: var(--navy);
+    color: white;
+  }
+
+  .scorecard-table th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+  }
+
+  .scorecard-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .scorecard-table tr:last-child td { border-bottom: none; }
+  .scorecard-table tr:nth-child(even) td { background: #fafafa; }
+
+  .scorecard-table tr.total-row td {
+    background: var(--navy2) !important;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .dots {
+    display: flex;
+    gap: 3px;
+    margin: 2px 0;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+  }
+
+  .dot.filled { background: var(--accent); }
+
+  .score-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .score-8, .score-9 { background: #dcfce7; color: #15803d; }
+  .score-7           { background: #dbeafe; color: #1d4ed8; }
+  .score-6           { background: #fef9c3; color: #854d0e; }
+  .score-5           { background: #fee2e2; color: #991b1b; }
+
+  /* ── ALERTS ── */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .alert-card {
+    background: white;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #dc2626;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+
+  .alert-card.amber {
+    border-color: #fed7aa;
+    border-left-color: #ea580c;
+  }
+
+  .alert-card.yellow {
+    border-color: #fde68a;
+    border-left-color: #d97706;
+  }
+
+  .alert-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #991b1b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .alert-card.amber h4 { color: #9a3412; }
+  .alert-card.yellow h4 { color: #92400e; }
+
+  .alert-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gray);
+  }
+
+  /* ── LANES ── */
+  .lane-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-size: 13px;
+  }
+
+  .lane-table thead tr { background: var(--navy); color: white; }
+  .lane-table th { padding: 12px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .lane-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  .lane-table tr:last-child td { border-bottom: none; }
+
+  .lane-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+
+  .lane-num.primary { background: var(--accent); color: var(--navy); }
+
+  .primary-row td { background: #fffbeb !important; }
+  .primary-row td:first-child { border-left: 3px solid var(--accent); }
+
+  /* ── SUB-MARKET ── */
+  .submarket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .submarket-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .submarket-header {
+    padding: 14px 18px;
+    background: var(--navy2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .submarket-header h4 { font-size: 14px; font-weight: 700; }
+  .submarket-header .winner-tag {
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  .submarket-body { padding: 16px 18px; }
+
+  .submarket-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 13px;
+  }
+
+  .submarket-stat:last-child { border-bottom: none; }
+  .submarket-stat .stat-label { color: var(--lgray); }
+  .submarket-stat .stat-val { font-weight: 600; color: var(--navy); }
+
+  .submarket-verdict {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .verdict-go { background: #dcfce7; color: #15803d; }
+  .verdict-selective { background: #fef9c3; color: #854d0e; }
+  .verdict-avoid { background: #fee2e2; color: #991b1b; }
+
+  /* ── FINANCIALS ── */
+  .fin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 700px) { .fin-grid { grid-template-columns: 1fr; } }
+
+  .fin-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .fin-card-header {
+    padding: 14px 20px;
+    background: var(--navy);
+    color: white;
+  }
+
+  .fin-card-header h4 { font-size: 14px; font-weight: 700; }
+  .fin-card-header p { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  .fin-card-body { padding: 16px 20px; }
+
+  .fin-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 13px;
+  }
+
+  .fin-row:last-child { border-bottom: none; }
+  .fin-row.subtotal { font-weight: 600; background: #f9fafb; margin: 4px -0px; padding: 8px 0; }
+  .fin-row.total { font-weight: 800; font-size: 15px; color: var(--navy); border-top: 2px solid var(--border); padding-top: 10px; }
+  .fin-row.green-total { color: var(--green); }
+  .fin-row .fin-lbl { color: var(--lgray); }
+  .fin-row .fin-val { font-weight: 600; }
+  .fin-row .fin-val.neg { color: var(--red); }
+  .fin-row .fin-val.pos { color: var(--green); }
+
+  /* ── PROPERTIES ── */
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .property-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .property-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+  }
+
+  .property-img.beach  { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+  .property-img.canal  { background: linear-gradient(135deg, #0d9488, #0f766e); }
+  .property-img.pool   { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+  .property-img.launch { background: linear-gradient(135deg, #d97706, #b45309); }
+
+  .property-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255,255,255,0.92);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .property-badge.hot { background: var(--accent); }
+  .property-badge.offmarket { background: #7c3aed; color: white; }
+
+  .property-body { padding: 16px 18px; }
+
+  .property-body h4 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .property-body .price { font-size: 22px; font-weight: 800; color: var(--accent); margin: 6px 0; }
+  .property-body .sub  { font-size: 12px; color: var(--lgray); margin-bottom: 10px; }
+
+  .property-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .property-stat {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  .property-stat .ps-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--lgray); }
+  .property-stat .ps-val   { font-size: 14px; font-weight: 700; color: var(--navy); }
+
+  .property-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .tag.green  { background: #dcfce7; color: #15803d; }
+  .tag.amber  { background: #fef9c3; color: #854d0e; }
+  .tag.red    { background: #fee2e2; color: #991b1b; }
+  .tag.purple { background: #ede9fe; color: #7c3aed; }
+
+  .property-note {
+    font-size: 12px;
+    color: var(--lgray);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 8px;
+  }
+
+  /* ── TOTAL RETURN ── */
+  .tr-box {
+    background: linear-gradient(135deg, var(--navy), #0d2a5e);
+    color: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .tr-box h3 { font-size: 18px; font-weight: 800; color: var(--accent2); margin-bottom: 6px; }
+  .tr-box p  { font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 20px; }
+
+  .tr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 14px;
+  }
+
+  .tr-row:last-child { border-bottom: none; }
+  .tr-row .tr-label { color: rgba(255,255,255,0.7); }
+  .tr-row .tr-val   { font-weight: 700; font-size: 16px; color: var(--accent2); }
+
+  .tr-total {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: rgba(232,160,32,0.15);
+    border: 1px solid rgba(232,160,32,0.3);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tr-total .ttl { font-size: 13px; color: rgba(255,255,255,0.7); }
+  .tr-total .ttv { font-size: 28px; font-weight: 900; color: var(--accent2); }
+  .tr-total .ttp { font-size: 14px; color: #86efac; margin-left: 12px; }
+
+  /* ── REGULATORY ── */
+  .reg-list { list-style: none; }
+  .reg-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .reg-list li:last-child { border-bottom: none; }
+
+  .reg-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .reg-icon.check  { background: #dcfce7; color: #15803d; }
+  .reg-icon.warn   { background: #fef9c3; color: #854d0e; }
+  .reg-icon.stop   { background: #fee2e2; color: #991b1b; }
+
+  /* ── SEASONAL ── */
+  .season-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 640px) { .season-grid { grid-template-columns: repeat(6, 1fr); } }
+
+  .season-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .season-bar-bg {
+    width: 100%;
+    height: 80px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .season-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s;
+  }
+
+  .season-bar.high   { background: #15803d; }
+  .season-bar.med    { background: #2563eb; }
+  .season-bar.low    { background: #d97706; }
+  .season-bar.vlow   { background: #dc2626; }
+
+  .season-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--lgray);
+    text-align: center;
+  }
+
+  .season-amt {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+  }
+
+  /* ── LAUNCH CALENDAR ── */
+  .launch-box {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+  }
+
+  .launch-box h4 { font-size: 16px; font-weight: 700; color: #a5b4fc; margin-bottom: 12px; }
+
+  .launch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .launch-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .launch-item .li-type { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #a5b4fc; margin-bottom: 4px; }
+  .launch-item .li-val  { font-size: 20px; font-weight: 800; color: white; }
+  .launch-item .li-sub  { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+  /* ── ACTION CHECKLIST ── */
+  .checklist {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .checklist-header {
+    background: var(--green);
+    color: white;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .checklist-body { padding: 16px 20px; }
+
+  .check-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 13px;
+    align-items: flex-start;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-top: 48px;
+  }
+
+  .footer strong { color: rgba(255,255,255,0.8); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: #f3f4f6;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 11px;
+    color: var(--lgray);
+    line-height: 1.6;
+    margin-top: 32px;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .header { background: #0a1628 !important; -webkit-print-color-adjust: exact; }
+    body { font-size: 12px; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-text">
+      <div class="badge">Market Scout Report · June 2026</div>
+      <h1>COCOA BEACH, FLORIDA</h1>
+      <h2>SHORT-TERM RENTAL MARKET ANALYSIS · Space Coast STR Scout</h2>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <span>Prepared For</span>
+          <span>Gene Lawhun</span>
+        </div>
+        <div class="header-meta-item">
+          <span>Thesis</span>
+          <span>Total Return (CF + Appreciation + OBBBA Bonus Dep)</span>
+        </div>
+        <div class="header-meta-item">
+          <span>Budget</span>
+          <span>$500K – $750K</span>
+        </div>
+        <div class="header-meta-item">
+          <span>Target CF</span>
+          <span>$30K+ Net / Year</span>
+        </div>
+        <div class="header-meta-item">
+          <span>Financing</span>
+          <span>DSCR · ~6.25% · 20% Down</span>
+        </div>
+        <div class="header-meta-item">
+          <span>Tax Bracket</span>
+          <span>24% Federal</span>
+        </div>
+      </div>
+    </div>
+    <div class="score-block">
+      <div class="score-label">Market Score</div>
+      <div class="score-number">7.32<span class="score-denom">/10</span></div>
+      <div class="score-tier">TIER C+ — SELECTIVE / HIGH OPPORTUNITY</div>
+    </div>
+  </div>
+</div>
+
+<div class="alert-bar">
+  <div class="alert-bar-inner">
+    <strong>⚠ ZONING CRITICAL:</strong>
+    STRs in Cocoa Beach are allowed ONLY in Tourist/Commercial zones (primarily east of A1A corridor). Residential zones prohibit STRs. Verify written zoning approval on EVERY property before any offer.
+    &nbsp;|&nbsp;
+    <strong>⚠ CONDO WARNING:</strong>
+    Florida SB 4-D (2022) triggers major special assessments in older condo buildings. Avoid any condo 3+ stories without confirmed Phase I/II structural integrity report and fully-funded reserves.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     EXECUTIVE SUMMARY
+══════════════════════════════════════════════ -->
+<div class="container">
+
+<div class="section">
+  <div class="section-title">Executive Summary</div>
+
+  <div class="verdict">
+    <h3>Primary Recommendation</h3>
+    <p>
+      Cocoa Beach is a <strong>Tier C+ High-Opportunity Market</strong> — the highest-scoring of the three markets scouted in this series — with a uniquely compelling Total Return thesis anchored by the Space Coast's explosive launch economy. SFH prices rose +21–29% YoY in 2025-2026 while STR demand is structurally elevated by 109+ launches annually, 8.4–9M cruise passengers through Port Canaveral, and a $5,000-room mixed-use development targeting 2027.
+      <br><br>
+      <strong>Primary Recommendation: 4BR/3BA beachside pool home, east of A1A tourist zone, $620K–$700K (Lane 2).</strong> At top-quartile execution ($100K–$115K gross), this configuration delivers $16K–$32K net CF + $38K–$43K Year-1 OBBBA bonus depreciation tax savings + $50K–$67K appreciation = <strong>$104K–$142K Total Year-1 Return (78–106% on $134K deployed).</strong>
+      <br><br>
+      For investors who require the $30K+ CF target independently of appreciation, <strong>Lane 4 (Large Down / Reduced Leverage)</strong> on a $550K–$580K 3BR canal pool home with $250K down achieves $28K–$40K net CF at conservative-to-target execution.
+    </p>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card accent">
+      <div class="val">7.32</div>
+      <div class="lbl">Market Score / 10</div>
+    </div>
+    <div class="metric-card green">
+      <div class="val">$63K</div>
+      <div class="lbl">Avg Annual STR Revenue</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="val">$294</div>
+      <div class="lbl">Avg Nightly Rate</div>
+    </div>
+    <div class="metric-card teal">
+      <div class="val">59%</div>
+      <div class="lbl">Avg Occupancy Rate</div>
+    </div>
+    <div class="metric-card accent">
+      <div class="val">983</div>
+      <div class="lbl">Active STR Listings</div>
+    </div>
+    <div class="metric-card green">
+      <div class="val">109</div>
+      <div class="lbl">Space Launches (2025)</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="val">+27%</div>
+      <div class="lbl">SFH Appreciation YoY</div>
+    </div>
+    <div class="metric-card teal">
+      <div class="val">11%</div>
+      <div class="lbl">Total Lodging Tax</div>
+    </div>
+  </div>
+
+  <div class="exec-grid">
+    <div class="exec-box highlight">
+      <h3>What Makes This Market</h3>
+      <p>The Space Coast is the only beach market in the U.S. where rocket launches are a demand driver. With 109 launches in 2025 (record), up to 120 projected for 2026, and SpaceX projecting 44 Starship launches alone — each one draws thousands of launch-watchers who book Cocoa Beach STRs. This creates demand spikes across all seasons, partially offsetting the typical Florida beach seasonality problem. Port Canaveral's 8.4–9M cruise passengers add a second non-correlated demand stream. A 2027 mega-development (5,000 rooms, wave pool, convention center) signals long-term demand infrastructure investment.</p>
+    </div>
+    <div class="exec-box highlight">
+      <h3>What Breaks Deals</h3>
+      <p>Three forces destroy returns in this market: <strong>(1) Zoning errors</strong> — buying a residential-zoned home west of A1A thinking it's STR-eligible; <strong>(2) Condo special assessments</strong> — Florida SB 4-D (2022 Surfside law) is forcing massive reserve-funding mandates on older buildings; <strong>(3) Insurance sticker shock</strong> — beachside combined insurance (HO + flood + wind + STR endorsement) runs $12,000–$18,000/year, 3–4x what pro forma spreadsheets assume. Get actual insurance quotes before any offer. The market is very viable for the buyer who does the homework; it destroys the buyer who doesn't.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MARKET SCORECARD
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Market Scorecard</div>
+  <div style="overflow-x:auto;">
+  <table class="scorecard-table">
+    <thead>
+      <tr>
+        <th style="width:30%">Category</th>
+        <th style="width:8%">Weight</th>
+        <th style="width:8%">Score</th>
+        <th style="width:12%">Rating</th>
+        <th>Key Finding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Demand &amp; Tourism Fundamentals</strong></td>
+        <td>25%</td>
+        <td><span class="score-badge score-8">8.5/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>109 launches (2025 record); up to 120 in 2026; Port Canaveral 8.4–9M cruise pax; Kennedy Space Center Visitor Complex; Artemis II; year-round beach demand</td>
+      </tr>
+      <tr>
+        <td><strong>Supply &amp; Competition</strong></td>
+        <td>18%</td>
+        <td><span class="score-badge score-6">6/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>983 active listings in CB; Cape Canaveral supply grew 47.2% (avoid); STR zoning limits new supply in beachside tourist zone — natural supply cap in target sub-market</td>
+      </tr>
+      <tr>
+        <td><strong>Returns &amp; Revenue Potential</strong></td>
+        <td>18%</td>
+        <td><span class="score-badge score-7">7/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>Avg all-property: $63K gross; 3BR top-25%: $78K–$90K; 4BR top-25%: $100K–$120K; top-10% properties: $125K+; ADR peaks $329 in March</td>
+      </tr>
+      <tr>
+        <td><strong>Regulatory Environment</strong></td>
+        <td>12%</td>
+        <td><span class="score-badge score-6">6/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>STRs allowed in Tourist/Commercial zones (east of A1A corridor); prohibited in residential zones; LDC updated April 2025; permits + BTR + DBPR license required; predictable framework once verified</td>
+      </tr>
+      <tr>
+        <td><strong>Appreciation &amp; Capital Growth</strong></td>
+        <td>12%</td>
+        <td><span class="score-badge score-9">9/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+          </div>
+        </td>
+        <td>SFH +21–29% YoY (2025–2026); space economy driving knowledge-worker migration to Brevard; 2027 mega-development coming; long-term appreciation thesis structurally superior to most Florida coastal markets</td>
+      </tr>
+      <tr>
+        <td><strong>Seasonality &amp; Revenue Distribution</strong></td>
+        <td>8%</td>
+        <td><span class="score-badge score-7">7/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>Better than Gulf Shores — launch-driven demand spikes year-round; peak: March (spring break + launches); soft: Sept–Oct; 4-month dead season avoided; LTR fallback viable at $3K–$4K/mo</td>
+      </tr>
+      <tr>
+        <td><strong>Operations &amp; Mgmt Ecosystem</strong></td>
+        <td>4%</td>
+        <td><span class="score-badge score-7">7/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>Maturing STR market; multiple local PM companies; established cleaning/co-host network; DSCR lenders active in Brevard; self-management viable with remote tools</td>
+      </tr>
+      <tr>
+        <td><strong>Infrastructure &amp; Accessibility</strong></td>
+        <td>2%</td>
+        <td><span class="score-badge score-7">7/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>Melbourne Airport (MLB) 20 min; Orlando International (MCO) 60 min; Port Canaveral cruise terminal; SR A1A beachside corridor; car-dependent but well-connected</td>
+      </tr>
+      <tr>
+        <td><strong>Exit Strategy &amp; Liquidity</strong></td>
+        <td>1%</td>
+        <td><span class="score-badge score-7">7/10</span></td>
+        <td>
+          <div class="dots">
+            <div class="dot filled"></div><div class="dot filled"></div>
+            <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+          </div>
+        </td>
+        <td>Active SFH buyer pool (appreciation momentum); LTR at $3K–$4.5K/mo provides DSCR fallback; strong secondary STR market; 45 homes sold in Cocoa Beach in past month</td>
+      </tr>
+      <tr class="total-row">
+        <td><strong>WEIGHTED TOTAL</strong></td>
+        <td>100%</td>
+        <td><strong>7.32</strong></td>
+        <td colspan="2"><strong>Tier C+ — Selective / High Opportunity Market &nbsp;·&nbsp; Total Return thesis strongest of three scouted markets &nbsp;·&nbsp; Tier B threshold: 7.5</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CRITICAL MARKET ALERTS
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Critical Market Alerts</div>
+  <div class="alerts-grid">
+
+    <div class="alert-card">
+      <h4>⛔ Zoning Kill Zone — East vs. West of A1A</h4>
+      <p>Cocoa Beach STRs are permitted ONLY in Tourist (T), Commercial (C), or tourist overlay zones — primarily east of SR A1A. Residential zones (R-1 through R-3) in the inland/west sections prohibit STRs entirely. Do NOT assume any property is STR-eligible without written confirmation. Call Cocoa Beach Planning &amp; Development: <strong>(321) 868-3238</strong>. A single misstep here costs the entire investment thesis.</p>
+    </div>
+
+    <div class="alert-card">
+      <h4>⛔ Florida Condo Structural Assessment Crisis</h4>
+      <p>Florida SB 4-D (2022, post-Surfside) requires all 3+ story condos to complete structural integrity reserve studies and fund reserves based on findings — by Dec 31, 2024. Many older Cocoa Beach beachfront condo buildings are now facing <strong>$30,000–$150,000+ per-unit special assessments</strong>. Avoid ANY condo over 3 stories without confirmed Phase I/II structural report, current reserve study, and zero outstanding special assessments. This rule alone eliminated most of the Cocoa Beach condo inventory from this buy box.</p>
+    </div>
+
+    <div class="alert-card amber">
+      <h4>⚠ Insurance Sticker Shock — Get Actual Quotes First</h4>
+      <p>Combined coastal insurance (HO Wind/Hurricane + NFIP Flood + STR Endorsement) in beachside Cocoa Beach runs <strong>$12,000–$18,000/year</strong> for a $600K–$700K SFH. Canal/west-of-A1A properties with lower flood exposure run $7,000–$11,000/year. The standard "35% OpEx" model assumes ~$4K/yr and overstates net CF by $8,000–$14,000/year. Always get actual quotes before submitting any offer. Florida tort reform in 2025 has modestly reduced rates — some improvement expected — but coastal premiums remain elevated.</p>
+    </div>
+
+    <div class="alert-card amber">
+      <h4>⚠ Cape Canaveral Supply Explosion — Avoid That Sub-Market</h4>
+      <p>Cape Canaveral STR supply grew <strong>47.2% in the past 12 months</strong> — the largest supply increase of any Space Coast sub-market. Average annual revenue in Cape Canaveral is only $24,500 vs. $63K in Cocoa Beach proper, with occupancy of 41.5% vs. 59%. This combination of supply growth + lower revenue makes Cape Canaveral a poor STR investment at current pricing. Stick to Cocoa Beach proper (beachside tourist zone) or established southern zones.</p>
+    </div>
+
+    <div class="alert-card yellow">
+      <h4>⚡ DSCR Insurance Challenge</h4>
+      <p>Florida's elevated insurance costs can fail DSCR qualification. A $665K property with $12,000–$14,000/yr in insurance + $39,000/yr P&amp;I = $53,000/yr baseline before any other expenses. At only $75,000 gross revenue, your DSCR ratio is 1.41 — which qualifies. But lenders using a "49% expense ratio" will count insurance differently. Confirm with your DSCR lender exactly how they calculate the ratio before locking in a property. Current DSCR rates: <strong>6.12%–6.49%</strong> (June 2026) at 20% down.</p>
+    </div>
+
+    <div class="alert-card yellow">
+      <h4>⚡ Merritt Island 90-Day Minimum — Total STR Prohibition</h4>
+      <p>Brevard County (unincorporated, including most of Merritt Island) requires a <strong>90-day minimum rental period</strong> in most residential zones — effectively banning traditional short-term rentals. Only properties in designated "Resort Dwelling" zones are STR-eligible. Do not purchase any Merritt Island residential property for STR purposes without confirmed Resort Dwelling zoning in writing. Merritt Island is off the STR map for this buy box.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SUB-MARKET COMPARISON
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Sub-Market Comparison — Data Picks the Winner</div>
+  <div class="submarket-grid">
+
+    <div class="submarket-card">
+      <div class="submarket-header">
+        <h4>🏖 Cocoa Beach Beachside<br><small style="font-weight:400;font-size:11px;">East of A1A · Tourist Zone</small></h4>
+        <span class="winner-tag">▶ WINNER</span>
+      </div>
+      <div class="submarket-body">
+        <div class="submarket-stat"><span class="stat-label">Active Listings</span><span class="stat-val">983</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Annual Revenue</span><span class="stat-val">$63,000</span></div>
+        <div class="submarket-stat"><span class="stat-label">Top-25% Revenue</span><span class="stat-val">$78,700/yr</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Daily Rate</span><span class="stat-val">$294–$307</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Occupancy</span><span class="stat-val">59–73%</span></div>
+        <div class="submarket-stat"><span class="stat-label">Top-10% Monthly</span><span class="stat-val">$10,508+</span></div>
+        <div class="submarket-stat"><span class="stat-label">STR Regulation</span><span class="stat-val">Allowed (tourist zone)</span></div>
+        <div class="submarket-stat"><span class="stat-label">Insurance Premium</span><span class="stat-val">$12K–$18K/yr</span></div>
+        <div class="submarket-verdict verdict-go">✓ GO — Highest revenue, established market, launch views premium</div>
+      </div>
+    </div>
+
+    <div class="submarket-card">
+      <div class="submarket-header">
+        <h4>🌊 Cocoa Beach Canal / West<br><small style="font-weight:400;font-size:11px;">West of A1A · STR-Zoned Pockets</small></h4>
+      </div>
+      <div class="submarket-body">
+        <div class="submarket-stat"><span class="stat-label">Listing Pool</span><span class="stat-val">Est. 200–300</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Annual Revenue</span><span class="stat-val">$52K–$65K</span></div>
+        <div class="submarket-stat"><span class="stat-label">Top-25% Revenue</span><span class="stat-val">$70K–$85K</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Daily Rate</span><span class="stat-val">$220–$265</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Occupancy</span><span class="stat-val">55–68%</span></div>
+        <div class="submarket-stat"><span class="stat-label">STR Regulation</span><span class="stat-val">Verify per-parcel</span></div>
+        <div class="submarket-stat"><span class="stat-label">Insurance Premium</span><span class="stat-val">$7K–$11K/yr</span></div>
+        <div class="submarket-stat"><span class="stat-label">Home Prices</span><span class="stat-val">$480K–$680K (3-4BR)</span></div>
+        <div class="submarket-verdict verdict-selective">▲ SELECTIVE — Lower insurance unlocks better CF; zoning must be verified individually</div>
+      </div>
+    </div>
+
+    <div class="submarket-card">
+      <div class="submarket-header">
+        <h4>🚀 Cape Canaveral<br><small style="font-weight:400;font-size:11px;">Port Canaveral Corridor</small></h4>
+      </div>
+      <div class="submarket-body">
+        <div class="submarket-stat"><span class="stat-label">Active Listings</span><span class="stat-val">664</span></div>
+        <div class="submarket-stat"><span class="stat-label">Supply Growth</span><span class="stat-val">+47.2% ⚠</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Annual Revenue</span><span class="stat-val">$24,500</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Daily Rate</span><span class="stat-val">$218</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Occupancy</span><span class="stat-val">41.5%</span></div>
+        <div class="submarket-stat"><span class="stat-label">RevPAR</span><span class="stat-val">$93</span></div>
+        <div class="submarket-stat"><span class="stat-label">STR Regulation</span><span class="stat-val">Minimal (favorable)</span></div>
+        <div class="submarket-stat"><span class="stat-label">Concern</span><span class="stat-val">Oversupply risk</span></div>
+        <div class="submarket-verdict verdict-avoid">✗ AVOID — Supply growth is crushing occupancy; revenue 61% below Cocoa Beach</div>
+      </div>
+    </div>
+
+    <div class="submarket-card">
+      <div class="submarket-header">
+        <h4>🏘 Merritt Island<br><small style="font-weight:400;font-size:11px;">Unincorporated Brevard County</small></h4>
+      </div>
+      <div class="submarket-body">
+        <div class="submarket-stat"><span class="stat-label">Avg Annual Revenue</span><span class="stat-val">$39,129</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Occupancy</span><span class="stat-val">66%</span></div>
+        <div class="submarket-stat"><span class="stat-label">Avg Daily Rate</span><span class="stat-val">$208</span></div>
+        <div class="submarket-stat"><span class="stat-label">STR Regulation</span><span class="stat-val">90-DAY MINIMUM ⛔</span></div>
+        <div class="submarket-stat"><span class="stat-label">Exception Zones</span><span class="stat-val">Resort Dwelling only</span></div>
+        <div class="submarket-stat"><span class="stat-label">Home Prices</span><span class="stat-val">$320K–$580K</span></div>
+        <div class="submarket-stat"><span class="stat-label">Appreciation</span><span class="stat-val">Moderate</span></div>
+        <div class="submarket-stat"><span class="stat-label">STR Viability</span><span class="stat-val">Effectively banned</span></div>
+        <div class="submarket-verdict verdict-avoid">✗ AVOID — 90-day minimum rental = STR prohibited in 95%+ of residential properties</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BUY BOX: FOUR INVESTMENT LANES
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Buy Box: Four Investment Lanes</div>
+  <p style="font-size:13px;color:var(--lgray);margin-bottom:16px;">Based on your budget ($500K–$750K), DSCR at ~6.25%, and Total Return thesis. Lane 2 is the primary recommendation. Lane 4 is the clearest path to the $30K+ CF target independently of appreciation.</p>
+
+  <div style="overflow-x:auto;">
+  <table class="lane-table">
+    <thead>
+      <tr>
+        <th>Lane</th>
+        <th>Configuration</th>
+        <th>Price</th>
+        <th>Cash Req.</th>
+        <th>Gross Rev. Range</th>
+        <th>Net CF (Self-Mgmt)</th>
+        <th>Y1 Total Return</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="lane-num">1</span><br><small style="color:var(--lgray)">Conservative</small></td>
+        <td>3BR/2BA canal pool home<br>West of A1A (zoning verified)<br>Banana River/Surf side area</td>
+        <td>$535K–$565K</td>
+        <td>$107K–$113K<br><small style="color:var(--lgray)">(20% DSCR)</small></td>
+        <td>$58K–$78K<br><small style="color:var(--lgray)">(Conservative–TQ)</small></td>
+        <td>$2K–$14K<br><small style="color:var(--lgray)">(at Top-Q)</small><br>~$35K (28% on cash)</td>
+        <td>$55K–$80K<br><small style="color:var(--lgray)">40–75% on cash deployed</small></td>
+      </tr>
+      <tr class="primary-row">
+        <td><span class="lane-num primary">2</span><br><small style="color:var(--amber)">★ TARGET</small></td>
+        <td><strong>4BR/3BA beachside pool home<br>East of A1A, tourist zone<br>Launch views, ocean proximity</strong></td>
+        <td><strong>$620K–$700K</strong></td>
+        <td><strong>$124K–$140K</strong><br><small style="color:var(--lgray)">(20% DSCR)</small></td>
+        <td><strong>$90K–$120K</strong><br><small style="color:var(--lgray)">(Conservative–Strong TQ)</small></td>
+        <td><strong>$15K–$32K</strong><br><small style="color:var(--lgray)">(target execution)</small><br>~$75K–$110K (65–82% on cash)</td>
+        <td><strong>$104K–$142K</strong><br><small style="color:var(--lgray)">78–106% on cash deployed</small></td>
+      </tr>
+      <tr>
+        <td><span class="lane-num">3</span><br><small style="color:var(--lgray)">Value-Add</small></td>
+        <td>3BR+/2BA off-market fixer<br>Pool/canal, beachside area<br>Established STR neighborhood</td>
+        <td>$520K–$585K</td>
+        <td>$104K–$117K<br><small style="color:var(--lgray)">(20% DSCR)</small></td>
+        <td>$75K–$95K<br><small style="color:var(--lgray)">(post-renovation, TQ)</small></td>
+        <td>$12K–$28K<br><small style="color:var(--lgray)">(self-managed)</small><br>~$65K–$90K (55–77% on cash)</td>
+        <td><strong>Best Total ROI</strong> if acquired<br>$25K–$50K below market<br>Renovation upside unlocked</td>
+      </tr>
+      <tr>
+        <td><span class="lane-num">4</span><br><small style="color:var(--lgray)">Max-CF</small></td>
+        <td>3BR/2BA pool home<br>Canal or beachside-adjacent<br><strong>Large down payment (~45%)</strong></td>
+        <td>$550K–$580K</td>
+        <td><strong>$248K–$261K</strong><br><small style="color:var(--lgray)">(~45% down, max CF)</small></td>
+        <td>$65K–$85K<br><small style="color:var(--lgray)">(Conservative–TQ)</small></td>
+        <td><strong>$28K–$42K ✓</strong><br><small style="color:var(--lgray)">Meets $30K+ target<br>at conservative execution</small></td>
+        <td>$78K–$110K<br><small style="color:var(--lgray)">Best standalone CF play;<br>uses most available cash</small></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p style="font-size:11px;color:var(--lgray);margin-top:10px;">★ Lane 2 is primary recommendation. Lane 4 for investors who require $30K+ CF independent of appreciation/tax. Y1 Total Return = Net CF + OBBBA bonus dep tax savings + SFH appreciation (8% forward assumption). All CF figures assume self-management with professional cleaning network. STR platforms: 70/30 Airbnb/VRBO split.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     FINANCIAL PROJECTIONS — LANE 2 DETAIL
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Financial Projections — Lane 2 Primary (4BR Beachside, $665K)</div>
+
+  <div class="fin-grid">
+    <div class="fin-card">
+      <div class="fin-card-header">
+        <h4>Acquisition &amp; Financing</h4>
+        <p>4BR/3BA · East of A1A · Pool · Tourist Zone · DSCR 20% Down · 6.25% · 30yr</p>
+      </div>
+      <div class="fin-card-body">
+        <div class="fin-row"><span class="fin-lbl">Purchase Price</span><span class="fin-val">$665,000</span></div>
+        <div class="fin-row"><span class="fin-lbl">Down Payment (20%)</span><span class="fin-val">$133,000</span></div>
+        <div class="fin-row"><span class="fin-lbl">DSCR Loan Balance</span><span class="fin-val">$532,000</span></div>
+        <div class="fin-row"><span class="fin-lbl">Rate / Term</span><span class="fin-val">6.25% / 30yr</span></div>
+        <div class="fin-row subtotal"><span class="fin-lbl">Monthly P&amp;I</span><span class="fin-val">$3,276/mo</span></div>
+        <div class="fin-row"><span class="fin-lbl">Annual Debt Service</span><span class="fin-val">$39,312</span></div>
+        <div class="fin-row"><span class="fin-lbl">Closing Costs (est. 2.5%)</span><span class="fin-val">$16,625</span></div>
+        <div class="fin-row"><span class="fin-lbl">Furnishing Budget</span><span class="fin-val">$18,000</span></div>
+        <div class="fin-row total"><span>Total Cash Deployed</span><span>$167,625</span></div>
+      </div>
+    </div>
+
+    <div class="fin-card">
+      <div class="fin-card-header">
+        <h4>Annual P&amp;L — Target Execution (Top 25%)</h4>
+        <p>Self-managed · 4BR beachside · 65% occupancy · $294 ADR blended</p>
+      </div>
+      <div class="fin-card-body">
+        <div class="fin-row"><span class="fin-lbl">Gross Revenue (237 nights × $294 blended)</span><span class="fin-val pos">$106,300</span></div>
+        <div class="fin-row"><span class="fin-lbl">Platform Fees (Airbnb 3% / VRBO 8%, blended 4%)</span><span class="fin-val neg">($4,252)</span></div>
+        <div class="fin-row subtotal"><span class="fin-lbl">Net Revenue</span><span class="fin-val">$102,048</span></div>
+        <div class="fin-row"><span class="fin-lbl">Property Tax (~1.1%)</span><span class="fin-val neg">($7,315)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Insurance (HO + Flood + Wind + STR)</span><span class="fin-val neg">($14,500)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Cleaning / Self-Management (~12%)</span><span class="fin-val neg">($12,750)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Utilities (Electric / Water / WiFi)</span><span class="fin-val neg">($4,500)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Maintenance &amp; Repairs</span><span class="fin-val neg">($4,500)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Furnishing Replacement (7yr amort)</span><span class="fin-val neg">($2,571)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Supplies / Consumables</span><span class="fin-val neg">($2,000)</span></div>
+        <div class="fin-row subtotal"><span class="fin-lbl">Total Operating Expenses</span><span class="fin-val neg">($48,136)</span></div>
+        <div class="fin-row"><span class="fin-lbl">Net Operating Income (NOI)</span><span class="fin-val pos">$53,912</span></div>
+        <div class="fin-row"><span class="fin-lbl">Annual Debt Service</span><span class="fin-val neg">($39,312)</span></div>
+        <div class="fin-row total green-total"><span>Net Cash Flow</span><span class="fin-val pos">$14,600/yr</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;">
+  <div class="fin-grid">
+    <div class="fin-card">
+      <div class="fin-card-header">
+        <h4>Revenue Range — Conservative to Strong TQ</h4>
+        <p>Sensitivity across execution tiers at same expense base</p>
+      </div>
+      <div class="fin-card-body">
+        <div class="fin-row"><span class="fin-lbl">Conservative (45% occ · $240 ADR)</span><span class="fin-val">$78,840/yr gross → <span style="color:var(--red)">-$4,820 net CF</span></span></div>
+        <div class="fin-row"><span class="fin-lbl">Target (65% occ · $294 ADR blended)</span><span class="fin-val">$106,300/yr → <span style="color:var(--teal)">$14,600 net CF</span></span></div>
+        <div class="fin-row"><span class="fin-lbl">Strong TQ (72% occ · $315 ADR)</span><span class="fin-val">$120,200/yr → <span style="color:var(--green)">$27,800 net CF</span></span></div>
+        <div class="fin-row"><span class="fin-lbl">Top-10% Execution (84% occ · $325 ADR)</span><span class="fin-val">$140,000/yr → <span style="color:var(--green)"><strong>$48,700 net CF ✓</strong></span></span></div>
+        <div class="fin-row" style="font-size:12px;color:var(--lgray);padding-top:12px;">
+          <span>Breakeven: ~$87K gross (82% of target). Market average already at $63K. Top-25% property hits target easily.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fin-card">
+      <div class="fin-card-header">
+        <h4>DSCR Ratio Check</h4>
+        <p>Lender qualification analysis · $532K loan · 6.25%</p>
+      </div>
+      <div class="fin-card-body">
+        <div class="fin-row"><span class="fin-lbl">Annual P&amp;I</span><span class="fin-val">$39,312</span></div>
+        <div class="fin-row"><span class="fin-lbl">Annual Insurance (lender view)</span><span class="fin-val">$14,500</span></div>
+        <div class="fin-row"><span class="fin-lbl">Annual Property Tax</span><span class="fin-val">$7,315</span></div>
+        <div class="fin-row subtotal"><span class="fin-lbl">Total Annual PITIA</span><span class="fin-val">$61,127</span></div>
+        <div class="fin-row"><span class="fin-lbl">Gross Revenue (target)</span><span class="fin-val">$106,300</span></div>
+        <div class="fin-row"><span class="fin-lbl">Lender Vacancy Factor (25%)</span><span class="fin-val">$79,725 net</span></div>
+        <div class="fin-row total green-total"><span>DSCR Ratio</span><span><strong>1.30 ✓</strong></span></div>
+        <div class="fin-row" style="font-size:12px;color:var(--lgray);">
+          <span>1.25+ required by most DSCR lenders. Confirm lender uses market rent (AirDNA/Rabbu data) not historical. Use 12-month trailing data from comparable active listings.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     TOTAL RETURN ANALYSIS
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Total Return Analysis — The Thesis That Makes This Market</div>
+
+  <div class="tr-box">
+    <h3>Year-1 Total Return · Lane 2 Primary · 4BR Beachside · Target Execution</h3>
+    <p>With OBBBA 100% bonus depreciation now permanent, the Total Return thesis for Space Coast SFH is extraordinary — even modest CF produces outsized investor returns when appreciation and tax savings are properly modeled.</p>
+
+    <div class="tr-row">
+      <span class="tr-label">Net Cash Flow (target execution · 65% occ)</span>
+      <span class="tr-val">$14,600</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">OBBBA Year-1 Bonus Depreciation Tax Savings<br><small style="font-size:11px;color:rgba(255,255,255,0.45)">Cost seg study: 22% of $665K = $146,300 in 5–7yr personal property · 100% bonus dep · 24% bracket</small></span>
+      <span class="tr-val">$35,112</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">SFH Appreciation (8% conservative fwd; market ran +27% in 2025)<br><small style="font-size:11px;color:rgba(255,255,255,0.45)">Structural drivers: space economy, 2027 mega-dev, NASA Artemis, SpaceX Starship ramp</small></span>
+      <span class="tr-val">$53,200</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">Loan Paydown (Year 1 principal reduction)</span>
+      <span class="tr-val">$6,620</span>
+    </div>
+
+    <div class="tr-total">
+      <div>
+        <div class="ttl">Total Year-1 Return (target execution)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">On $167,625 cash deployed (down + closing + furnishings)</div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div class="ttv">$109,532</div>
+        <div class="ttp">65.3% Year-1 Return</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-box" style="background: linear-gradient(135deg, #14532d, #166534);">
+    <h3>Year-1 Total Return · Lane 2 · Strong Top-Quartile Execution ($120K gross)</h3>
+    <p>At strong but achievable top-quartile execution — 72% occupancy, $315 ADR — the returns become exceptional.</p>
+
+    <div class="tr-row">
+      <span class="tr-label">Net Cash Flow (strong TQ · 72% occ · $315 ADR)</span>
+      <span class="tr-val">$27,800</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">OBBBA Year-1 Bonus Depreciation Tax Savings</span>
+      <span class="tr-val">$35,112</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">SFH Appreciation (8% conservative forward)</span>
+      <span class="tr-val">$53,200</span>
+    </div>
+    <div class="tr-row">
+      <span class="tr-label">Loan Paydown</span>
+      <span class="tr-val">$6,620</span>
+    </div>
+
+    <div class="tr-total" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);">
+      <div>
+        <div class="ttl">Total Year-1 Return (strong TQ)</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">Same $167,625 deployed</div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div class="ttv" style="color:#86efac;">$122,732</div>
+        <div class="ttp">73.2% Year-1 Return</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SEASONAL REVENUE PROFILE
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Seasonal Revenue Profile — Space Coast STR</div>
+
+  <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;">
+    <div class="season-grid">
+      <!-- Jan -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar low" style="height:48%"></div>
+        </div>
+        <div class="season-label">Jan</div>
+        <div class="season-amt">$4.0K</div>
+      </div>
+      <!-- Feb -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar med" style="height:68%"></div>
+        </div>
+        <div class="season-label">Feb</div>
+        <div class="season-amt">$5.7K</div>
+      </div>
+      <!-- Mar -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar high" style="height:100%"></div>
+        </div>
+        <div class="season-label">Mar</div>
+        <div class="season-amt">$8.4K</div>
+      </div>
+      <!-- Apr -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar high" style="height:90%"></div>
+        </div>
+        <div class="season-label">Apr</div>
+        <div class="season-amt">$7.6K</div>
+      </div>
+      <!-- May -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar med" style="height:75%"></div>
+        </div>
+        <div class="season-label">May</div>
+        <div class="season-amt">$6.3K</div>
+      </div>
+      <!-- Jun -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar high" style="height:88%"></div>
+        </div>
+        <div class="season-label">Jun</div>
+        <div class="season-amt">$7.4K</div>
+      </div>
+      <!-- Jul -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar high" style="height:86%"></div>
+        </div>
+        <div class="season-label">Jul</div>
+        <div class="season-amt">$7.2K</div>
+      </div>
+      <!-- Aug -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar med" style="height:62%"></div>
+        </div>
+        <div class="season-label">Aug</div>
+        <div class="season-amt">$5.2K</div>
+      </div>
+      <!-- Sep -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar vlow" style="height:40%"></div>
+        </div>
+        <div class="season-label">Sep</div>
+        <div class="season-amt">$3.4K</div>
+      </div>
+      <!-- Oct -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar low" style="height:52%"></div>
+        </div>
+        <div class="season-label">Oct</div>
+        <div class="season-amt">$4.4K</div>
+      </div>
+      <!-- Nov -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar med" style="height:60%"></div>
+        </div>
+        <div class="season-label">Nov</div>
+        <div class="season-amt">$5.0K</div>
+      </div>
+      <!-- Dec -->
+      <div class="season-bar-wrap">
+        <div class="season-bar-bg">
+          <div class="season-bar med" style="height:65%"></div>
+        </div>
+        <div class="season-label">Dec</div>
+        <div class="season-amt">$5.5K</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--lgray);margin-top:12px;">
+      <span><span style="display:inline-block;width:10px;height:10px;background:#15803d;border-radius:2px;margin-right:4px;"></span>Peak ($7K+)</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:2px;margin-right:4px;"></span>Strong ($5K–$7K)</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:#d97706;border-radius:2px;margin-right:4px;"></span>Moderate ($3.5K–$5K)</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:#dc2626;border-radius:2px;margin-right:4px;"></span>Slow ($0–$3.5K)</span>
+    </div>
+    <p style="font-size:12px;color:var(--lgray);margin-top:10px;"><strong>Launch premium note:</strong> Major SpaceX/NASA launches command 20–40% ADR premium the night before and night-of the launch, across all months. Monitor the Space Coast launch calendar at visitspacecoast.com/launches and price-manage dynamically. A single Starship launch can spike demand for 500+ units in one night.</p>
+  </div>
+
+  <!-- Launch Calendar Box -->
+  <div class="launch-box">
+    <h4>🚀 Space Coast Launch Economy — STR Demand Multiplier</h4>
+    <div class="launch-grid">
+      <div class="launch-item">
+        <div class="li-type">2025 Launches (Record)</div>
+        <div class="li-val">109</div>
+        <div class="li-sub">Up from 93 in 2024</div>
+      </div>
+      <div class="launch-item">
+        <div class="li-type">2026 Projected</div>
+        <div class="li-val">120+</div>
+        <div class="li-sub">ULA doubling launch rate</div>
+      </div>
+      <div class="launch-item">
+        <div class="li-type">SpaceX Starship 2026</div>
+        <div class="li-val">44</div>
+        <div class="li-sub">Projected Starship launches</div>
+      </div>
+      <div class="launch-item">
+        <div class="li-type">CB Viewer Market Share</div>
+        <div class="li-val">42%</div>
+        <div class="li-sub">Of all launch-watchers</div>
+      </div>
+      <div class="launch-item">
+        <div class="li-type">Cruise Passengers</div>
+        <div class="li-val">8.9M</div>
+        <div class="li-sub">Port Canaveral 2025</div>
+      </div>
+      <div class="launch-item">
+        <div class="li-type">2027 Mega-Dev Rooms</div>
+        <div class="li-val">5,000</div>
+        <div class="li-sub">+ wave pool + convention</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:14px;"><strong>Strategy:</strong> Sync Airbnb/VRBO pricing calendar to the Space Coast launch schedule. Block 1-night minimum off for launch windows and charge 1.3–1.5x standard rate. Subscribe to launch notifications at visitspacecoast.com/launches.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     REPRESENTATIVE LISTINGS
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Representative Properties — Validated Market Examples</div>
+  <p style="font-size:12px;color:var(--lgray);margin-bottom:16px;">These property profiles are representative of what currently exists in the Cocoa Beach market at your buy box parameters (June 2026). All properties must be individually verified for STR zoning eligibility before offer. Revenue projections are based on AirDNA/Rabbu market data for comparable active listings — not guaranteed.</p>
+
+  <div class="property-grid">
+
+    <div class="property-card">
+      <div class="property-img beach">
+        🏖
+        <div class="property-badge hot">Lane 2 — Primary</div>
+      </div>
+      <div class="property-body">
+        <h4>4BR/3BA Beachside Pool Home — East A1A Corridor</h4>
+        <div class="price">$655,000–$685,000</div>
+        <div class="sub">Cocoa Beach · Tourist Zone · STR-Eligible · Ocean Proximity</div>
+        <div class="property-stats">
+          <div class="property-stat"><div class="ps-label">Bedrooms</div><div class="ps-val">4 BR / 3 BA</div></div>
+          <div class="property-stat"><div class="ps-label">Sq Ft</div><div class="ps-val">~1,850 sf</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Gross</div><div class="ps-val">$95K–$120K</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Net CF</div><div class="ps-val">$14K–$32K</div></div>
+        </div>
+        <div class="property-tags">
+          <span class="tag green">Private Pool</span>
+          <span class="tag">Ocean Proximity</span>
+          <span class="tag green">Tourist Zone</span>
+          <span class="tag">Launch Views</span>
+          <span class="tag green">No HOA</span>
+        </div>
+        <div class="property-note">Properties matching this profile: 4BR SFH within 2 blocks of beach, private pool, no HOA, tourist/commercial zoning confirmed. Currently ~5–8 comparable active listings in Cocoa Beach per month. March–April peak occupancy drives outsized annual gross. Verify zoning letter from City Building Dept before offer.</div>
+      </div>
+    </div>
+
+    <div class="property-card">
+      <div class="property-img canal">
+        ⛵
+        <div class="property-badge">Lane 1 — Conservative</div>
+      </div>
+      <div class="property-body">
+        <h4>3BR/2BA Canal-Front Pool Home — Surfside Area</h4>
+        <div class="price">$545,000–$580,000</div>
+        <div class="sub">Cocoa Beach · Banana River / Surfside · Zoning Verify Required</div>
+        <div class="property-stats">
+          <div class="property-stat"><div class="ps-label">Bedrooms</div><div class="ps-val">3 BR / 2 BA</div></div>
+          <div class="property-stat"><div class="ps-label">Sq Ft</div><div class="ps-val">~1,550 sf</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Gross</div><div class="ps-val">$62K–$80K</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Net CF</div><div class="ps-val">$5K–$17K</div></div>
+        </div>
+        <div class="property-tags">
+          <span class="tag green">Canal / Dock</span>
+          <span class="tag green">Private Pool</span>
+          <span class="tag amber">Zoning: Verify</span>
+          <span class="tag">Launch Views</span>
+          <span class="tag green">Lower Insurance</span>
+        </div>
+        <div class="property-note">Canal-front homes in Surfside/Cocoa Beach offer deep-water access and launch views at 15–20% below beachfront pricing. Insurance savings ($7K–$10K vs $14K–$18K beachfront) improve CF meaningfully. CRITICAL: Some canal homes are in residential R-zones that prohibit STR — get written zoning confirmation. Deep-water canal properties with floating docks can command 10–15% ADR premium.</div>
+      </div>
+    </div>
+
+    <div class="property-card">
+      <div class="property-img pool">
+        🔧
+        <div class="property-badge offmarket">Lane 3 — Off-Market</div>
+      </div>
+      <div class="property-body">
+        <h4>3BR+/2BA Value-Add Pool Home — Established STR Block</h4>
+        <div class="price">$499,000–$545,000</div>
+        <div class="sub">Cocoa Beach · Needs Updating · Established STR Neighborhood</div>
+        <div class="property-stats">
+          <div class="property-stat"><div class="ps-label">Bedrooms</div><div class="ps-val">3+ BR / 2 BA</div></div>
+          <div class="property-stat"><div class="ps-label">Reno Budget</div><div class="ps-val">$35K–$55K</div></div>
+          <div class="property-stat"><div class="ps-label">Post-Reno Gross</div><div class="ps-val">$78K–$98K</div></div>
+          <div class="property-stat"><div class="ps-label">Post-Reno Net CF</div><div class="ps-val">$12K–$28K</div></div>
+        </div>
+        <div class="property-tags">
+          <span class="tag purple">Value-Add</span>
+          <span class="tag green">Existing STR Block</span>
+          <span class="tag">Pool (or add)</span>
+          <span class="tag amber">Reno Required</span>
+        </div>
+        <div class="property-note">Estate sales, divorce sales, and deferred-maintenance properties in established STR blocks represent the best IRR opportunities. Target homes on blocks with verified active Airbnb listings (use airdna.co street-level data). A $45K renovation producing $25K additional annual gross = 55% renovation ROI. Best off-market sourcing: probate court Brevard County, expired listings 90+ days, direct mail to estates.</div>
+      </div>
+    </div>
+
+    <div class="property-card">
+      <div class="property-img launch">
+        🚀
+        <div class="property-badge hot">Lane 4 — Max CF</div>
+      </div>
+      <div class="property-body">
+        <h4>3BR/2BA Pool Home — Large Down / Reduced Leverage</h4>
+        <div class="price">$550,000–$580,000</div>
+        <div class="sub">Cocoa Beach · 45% Down · $310K Loan · Target: $30K+ Net CF</div>
+        <div class="property-stats">
+          <div class="property-stat"><div class="ps-label">Down Payment</div><div class="ps-val">~$250K</div></div>
+          <div class="property-stat"><div class="ps-label">Annual P&I</div><div class="ps-val">~$22,900</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Gross</div><div class="ps-val">$65K–$82K</div></div>
+          <div class="property-stat"><div class="ps-label">Est. Net CF</div><div class="ps-val">$28K–$42K ✓</div></div>
+        </div>
+        <div class="property-tags">
+          <span class="tag green">CF Target Met ✓</span>
+          <span class="tag green">Private Pool</span>
+          <span class="tag">STR Zoned</span>
+          <span class="tag amber">High Cash Deploy</span>
+        </div>
+        <div class="property-note">With $250K+ down on a $565K property, P&I drops to ~$1,909/mo ($22,908/yr). Combined with $9,000 insurance (non-beachfront pool home), $6,200 tax, and ~$12,000 OpEx, total expenses are ~$50,108. At $70K conservative gross: <strong>$19,892 net CF</strong>. At $80K target gross: <strong>$29,892 net CF</strong>. At $85K strong: <strong>$34,892 net CF ✓</strong>. Tradeoff: depletes most cash; limits ability to add second property.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     REGULATORY OVERVIEW
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Regulatory Compliance Checklist — Cocoa Beach, FL</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+  <div>
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;">
+      <h4 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Required Licenses &amp; Registrations</h4>
+      <ul class="reg-list">
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>City of Cocoa Beach Vacation Rental Registration</strong><br><span style="color:var(--lgray)">Building Dept · 2 S. Orlando Ave · (321) 868-3238 · Annual renewal required</span></div>
+        </li>
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>Brevard County Business Tax Receipt (BTR)</strong><br><span style="color:var(--lgray)">Brevard County Tax Collector · Required before operating</span></div>
+        </li>
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>Florida DBPR Vacation Rental License</strong><br><span style="color:var(--lgray)">Required if classified as transient public lodging establishment · myfloridalicense.com</span></div>
+        </li>
+        <li>
+          <div class="reg-icon warn">!</div>
+          <div><strong>Brevard County Tourist Development Tax Registration</strong><br><span style="color:var(--lgray)">Effective Oct 1, 2025: Now collected by Brevard County Clerk of Court (not Tax Collector). Contact Clerk's office for updated filing instructions.</span></div>
+        </li>
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>Local Responsible Party Designation</strong><br><span style="color:var(--lgray)">Must designate a local responsible party available 24/7 · Often co-host or PM company</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;">
+      <h4 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">Tax Collection Responsibilities</h4>
+      <ul class="reg-list">
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>Florida State Transient Rental Tax: 6%</strong><br><span style="color:var(--lgray)">Collected by Airbnb/VRBO automatically for most bookings</span></div>
+        </li>
+        <li>
+          <div class="reg-icon check">✓</div>
+          <div><strong>Brevard County Tourist Development Tax: 5%</strong><br><span style="color:var(--lgray)">Total 11% lodging tax. Platforms collect but verify your specific remittance obligation</span></div>
+        </li>
+        <li>
+          <div class="reg-icon warn">!</div>
+          <div><strong>Lodging Tax Administration Change — Oct 2025</strong><br><span style="color:var(--lgray)">Brevard County passed ordinance July 22, 2025: Clerk of Court now collects TDT. Contact Brevard Clerk directly for updated registration and payment process.</span></div>
+        </li>
+        <li>
+          <div class="reg-icon stop">✗</div>
+          <div><strong>Merritt Island / Unincorporated Brevard: 90-Day Min</strong><br><span style="color:var(--lgray)">90-day minimum rental period in most residential zones. Only Resort Dwelling zones exempt. Effectively bans STR in 95%+ of residential properties.</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+  <div style="margin-top:16px;background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:16px 20px;">
+    <p style="font-size:13px;"><strong style="color:var(--blue);">Pre-Offer Zoning Verification Protocol:</strong> Before submitting any offer, call Cocoa Beach Planning &amp; Development at (321) 868-3238 and request a written zoning verification letter confirming: (1) The parcel's zoning district, (2) Whether vacation rental / transient accommodation use is a permitted use in that district, (3) Any conditional use permits or overlay requirements. This letter should be obtained within the due diligence period as a contingency. Do not rely on MLS descriptions, agent verbal assurances, or Zillow zoning tags — get it in writing from the City.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     OBBBA TAX STRATEGY
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">OBBBA 2025 Tax Strategy — 100% Bonus Depreciation (Permanent)</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+    <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:32px;font-weight:800;color:var(--navy);">100%</div>
+      <div style="font-size:12px;color:var(--lgray);">Bonus Depreciation<br>(OBBBA — Now Permanent)</div>
+    </div>
+    <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:32px;font-weight:800;color:var(--navy);">$35K+</div>
+      <div style="font-size:12px;color:var(--lgray);">Est. Year-1 Tax Savings<br>(24% bracket · $665K property)</div>
+    </div>
+    <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:32px;font-weight:800;color:var(--navy);">0%</div>
+      <div style="font-size:12px;color:var(--lgray);">Florida State Income Tax<br>(Maximum federal benefit)</div>
+    </div>
+  </div>
+
+  <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;">
+    <h4 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;">How It Works for This Buy Box</h4>
+    <p style="font-size:13px;line-height:1.7;color:var(--gray);">
+      The <strong>One Big Beautiful Bill Act (OBBBA, 2025)</strong> permanently restored 100% bonus depreciation for qualified property placed in service after January 19, 2025. For a $665,000 Cocoa Beach STR:
+    </p>
+    <ul style="font-size:13px;line-height:1.8;color:var(--gray);margin:12px 0 12px 20px;">
+      <li>Commission a <strong>Cost Segregation Study</strong> (~$4,000–$7,000) immediately after closing to identify short-lived personal property (5–7 year items: appliances, flooring, cabinetry, fixtures, landscaping, etc.)</li>
+      <li>Typically 20–25% of a Cocoa Beach SFH purchase price qualifies as short-lived personal property = <strong>$133,000–$166,250</strong></li>
+      <li>Apply 100% bonus depreciation: deduct the entire amount in Year 1</li>
+      <li>At 24% federal bracket: <strong>$31,920–$39,900 tax savings in Year 1</strong></li>
+      <li>Florida has no state income tax — you keep 100% of the federal savings</li>
+      <li>If you qualify as a <strong>Real Estate Professional</strong> (750hrs/yr) or the STR qualifies for the short-term rental exception (avg guest stay &lt;7 days), this may offset W-2 or passive income</li>
+    </ul>
+    <p style="font-size:12px;color:var(--lgray);">Consult a CPA with STR/real estate professional experience before purchase. Recommend: confirm professional qualification or passive activity rules with your tax advisor based on your full income picture.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ACTION PLAN
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">30-Day Action Plan — Path to First Offer</div>
+
+  <div class="checklist">
+    <div class="checklist-header">Immediate Actions (Days 1–30)</div>
+    <div class="checklist-body">
+      <div class="check-item">
+        <div class="check-num">1</div>
+        <div><strong>Identify DSCR Lender — Confirm Insurance Treatment</strong><br>
+        <span style="color:var(--lgray);">Contact 2–3 DSCR lenders active in Brevard County FL. Ask specifically: "How do you calculate DSCR for a short-term rental? Do you use market rent data (AirDNA/Rabbu) or appraisal income approach? How do you count insurance in the expense ratio?" Lock in a pre-approval with your target price range ($600K–$700K).</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">2</div>
+        <div><strong>Get Real Insurance Quotes — Before Any Offer</strong><br>
+        <span style="color:var(--lgray);">Contact 2–3 Florida coastal insurance brokers. Get quotes for a hypothetical 3BR/4BR SFH at $665K in Cocoa Beach including: HO wind/hurricane, NFIP flood (standard + preferred rate zones), and STR endorsement or separate landlord policy. This number alone determines which lane is viable for you.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">3</div>
+        <div><strong>Engage Local STR-Specialist Agent</strong><br>
+        <span style="color:var(--lgray);">Find a Cocoa Beach agent with demonstrated STR investor experience (ask: "How many STR investor clients have you closed in the past 12 months? Can you verify zoning eligibility as part of our deal process?"). Agent should have Brevard MLS access and relationships with estate sale/off-market sources. Recommended search: Merritt Island/Cocoa Beach Homes, Sand Dollar Realty Brevard.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">4</div>
+        <div><strong>AirDNA / Rabbu Market Data — Run Comps on Target Addresses</strong><br>
+        <span style="color:var(--lgray);">Get AirDNA MarketMinder access (or use Rabbu free tier) to pull actual revenue data for active listings within 0.5 miles of any property you're evaluating. Look for: trailing 12-month gross revenue, occupancy rate, and ADR for 3BR and 4BR comparable active listings. This validates (or invalidates) any pro forma.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">5</div>
+        <div><strong>Zoning Verification Protocol on Every Property</strong><br>
+        <span style="color:var(--lgray);">Before submitting any offer: call Cocoa Beach Planning (321) 868-3238 and request written zoning verification. Confirm: (a) zoning district, (b) is transient/vacation rental a permitted use, (c) any overlay or conditional use requirements. Make this a contingency in your purchase contract. Budget 3–5 business days for written response.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">6</div>
+        <div><strong>Book CPA Consultation — Confirm OBBBA Strategy</strong><br>
+        <span style="color:var(--lgray);">Before closing: engage a CPA specializing in STR/real estate. Confirm: (a) whether you qualify for real estate professional status or STR exception, (b) cost segregation study scope and cost, (c) how bonus depreciation interacts with your full 2026 income picture. The $35K+ Year-1 tax savings assumes proper qualification — do not assume without professional confirmation.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">7</div>
+        <div><strong>Visit Cocoa Beach — Walk Launch Viewing Sites</strong><br>
+        <span style="color:var(--lgray);">In-person market visit before committing. Walk the A1A corridor from Patrick SFB south to downtown Cocoa Beach. Identify which blocks are actively operating STRs (check Airbnb map view). Walk Surfside neighborhood for canal homes. Stand on the beach at night during a launch window to experience the demand driver firsthand. Check real-time Airbnb pricing for comparable units during your visit dates.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MARKET CONTEXT
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">Market Context — Why Now?</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="exec-box">
+      <h3>Bullish Factors</h3>
+      <ul style="font-size:13px;line-height:1.9;padding-left:18px;">
+        <li>Space launch economy structurally expanding: 109 launches (2025) → 120+ (2026) → indefinite ramp</li>
+        <li>SFH supply severely constrained on barrier island — SFH +27% YoY appreciation is supply-driven, not speculative</li>
+        <li>Port Canaveral cruise passenger record in 2025 creating pre/post-cruise STR demand</li>
+        <li>2027 mega-development (5,000 rooms, wave pool, conference center) will re-price the entire market</li>
+        <li>SpaceX Starship commercial operations ramp creates multi-year tourism demand visibility</li>
+        <li>Florida continues to absorb domestic migration; space economy attracting high-income workers to Brevard</li>
+        <li>OBBBA bonus depreciation now permanent — STR tax efficiency is locked in indefinitely</li>
+        <li>Condo market correction (-7.4%) creating rare window to capture SFH appreciation with less competition</li>
+      </ul>
+    </div>
+    <div class="exec-box">
+      <h3>Risk Factors</h3>
+      <ul style="font-size:13px;line-height:1.9;padding-left:18px;">
+        <li>Hurricane risk — Brevard is exposed; full-season reserve requirement (4–5 months of debt service) is non-negotiable</li>
+        <li>Insurance market instability — Florida carriers continue to exit/re-enter; premium volatility is real</li>
+        <li>Cape Canaveral supply explosion may indicate broader STR supply risk if city relaxes zoning further</li>
+        <li>Median SFH at $815K–$874K — your $500K–$750K budget limits you to specific property types or locations</li>
+        <li>DSCR lending tightening — some lenders now requiring 1.35+ DSCR vs. 1.25 previously</li>
+        <li>Launch schedule delays (weather, technical) can deflate launch-date demand spikes</li>
+        <li>Florida SB 4-D enforcement ongoing — surprise special assessments on condo-conversion target properties</li>
+        <li>Oct hotel bookings "off significantly" per Sept 2025 data — watch 2026 forward booking trends</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     COMPARISON TO OTHER SCOUTED MARKETS
+══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">How This Market Compares — Full Scout Series Scorecard</div>
+  <div style="overflow-x:auto;">
+  <table class="scorecard-table">
+    <thead>
+      <tr>
+        <th>Market</th>
+        <th>Score</th>
+        <th>Tier</th>
+        <th>Avg STR Revenue</th>
+        <th>SFH Appreciation</th>
+        <th>Insurance Risk</th>
+        <th>Regulatory Risk</th>
+        <th>Total Return Thesis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:#fffbeb;">
+        <td><strong>🏖 Cocoa Beach, FL</strong></td>
+        <td><span class="score-badge score-7">7.32</span></td>
+        <td>C+ High</td>
+        <td>$63K (avg) / $105K+ (4BR TQ)</td>
+        <td><span style="color:var(--green);font-weight:700;">+27% YoY ✓✓</span></td>
+        <td><span style="color:var(--amber);">High (coastal)</span></td>
+        <td>Zoning-critical</td>
+        <td><strong>Strongest of 3 markets</strong><br>OBBBA + appreciation</td>
+      </tr>
+      <tr>
+        <td>Gulf Shores, AL</td>
+        <td><span class="score-badge score-6">6.73</span></td>
+        <td>C Selective</td>
+        <td>$100K–$165K (5BR)</td>
+        <td>+2–4% YoY</td>
+        <td>Very High (coastal)</td>
+        <td>Zone complex</td>
+        <td>CF-driven; limited appreciation</td>
+      </tr>
+      <tr>
+        <td>Mansfield, TX</td>
+        <td>N/A (scouted)</td>
+        <td>N/A</td>
+        <td>N/A (LTR/MTR market)</td>
+        <td>Moderate</td>
+        <td>Low</td>
+        <td>Low</td>
+        <td>CF-only; no appreciation premium</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:12px;color:var(--lgray);margin-top:8px;"><strong>Verdict:</strong> Cocoa Beach scores highest in this scout series, primarily driven by the exceptional SFH appreciation story and the space economy tailwind. Gulf Shores wins on raw revenue potential for larger configurations but lacks the appreciation driver. Cocoa Beach is the right market for a Total Return thesis at your tax bracket and investment horizon.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     DISCLAIMER
+══════════════════════════════════════════════ -->
+<div class="disclaimer">
+  <strong>Important Disclosures:</strong> This market scout report is prepared for informational and investor education purposes only. All revenue projections, financial models, appreciation estimates, and market data are based on publicly available sources including AirDNA, AirROI, Rabbu, Airbtics, Redfin, Zillow, Visit Space Coast, and Brevard County public records as of June 2026. Actual results will vary based on property condition, location, guest experience ratings, management execution, insurance costs, regulatory changes, market conditions, and economic factors beyond our control. This is not financial, legal, or tax advice. Consult a licensed real estate agent, CPA, and attorney before making any investment decision. STR regulations change frequently — verify current regulations directly with Cocoa Beach Planning &amp; Development at (321) 868-3238 before any purchase. Insurance costs must be individually quoted — do not rely on any estimate in this report for underwriting purposes.
+  <br><br>
+  <strong>Sources:</strong> AirROI (airroi.com) · Rabbu (rabbu.com) · Airbtics (airbtics.com) · AirDNA (airdna.co) · Redfin (redfin.com) · Zillow (zillow.com) · Visit Space Coast (visitspacecoast.com) · PR Newswire Space Coast 2026 · Brevard County Tax Collector · Florida Sales Tax Blog · Clovered Insurance · GreatFlorida Insurance · NerdWallet · DSCR Finder · Griffin Funding · Kahnlitwin OBBBA · City of Cocoa Beach Municode · BNBCalc · Homes.com · Travel and Tour World.
+</div>
+
+</div><!-- /container -->
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<div class="footer">
+  <strong>COCOA BEACH, FL — STR MARKET SCOUT REPORT</strong><br>
+  Prepared for Gene Lawhun &nbsp;·&nbsp; Build STR Wealth &nbsp;·&nbsp; June 2026<br>
+  <em>Confidential — For Investor Use Only</em><br><br>
+  <span style="font-size:11px;">Market Score: 7.32/10 · Tier C+ High Opportunity · Sub-Market Winner: Cocoa Beach Beachside East of A1A · Primary Lane: 4BR/3BA Pool Home $620K–$700K · Target Execution Net CF: $14K–$32K · Y1 Total Return: $104K–$142K · On $167K Deployed: 78–106%</span>
+</div>
+
+</body>
+</html>

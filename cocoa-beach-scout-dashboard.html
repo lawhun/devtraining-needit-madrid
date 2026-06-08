@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocoa Beach, FL — STR Scout Dashboard</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #1a4a8a;
+    --gold: #e8a020;
+    --gold2: #f5c842;
+    --green: #15803d;
+    --green-bg: #dcfce7;
+    --amber: #b45309;
+    --amber-bg: #fef3c7;
+    --red: #b91c1c;
+    --red-bg: #fee2e2;
+    --blue: #1e40af;
+    --blue-bg: #dbeafe;
+    --gray: #374151;
+    --lgray: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f1f5f9;
+    --white: #ffffff;
+    --card-bg: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--gray);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d2050 50%, var(--navy2) 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(232,160,32,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,74,138,0.25) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 24px;
+  }
+  .hero-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero-title {
+    color: var(--white);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-subtitle {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.95rem;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .hero-badge-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .badge-generated {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .live-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #4ade80;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .live-dot::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 1.8s infinite;
+    display: block;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+  .buy-box-strip {
+    background: rgba(232,160,32,0.18);
+    border: 1px solid rgba(232,160,32,0.45);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .buy-box-label {
+    color: var(--gold2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+  }
+  .buy-box-text {
+    color: rgba(255,255,255,0.92);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .next-refresh {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.74rem;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ── KPI BAR ── */
+  .kpi-bar {
+    background: #0f2244;
+    border-top: 1px solid rgba(232,160,32,0.3);
+    border-bottom: 3px solid var(--gold);
+  }
+  .kpi-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+  }
+  .kpi-item {
+    padding: 14px 10px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .kpi-item:last-child { border-right: none; }
+  .kpi-value {
+    color: var(--gold2);
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .kpi-label {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .section-meta {
+    font-size: 0.8rem;
+    color: var(--lgray);
+  }
+
+  /* ── DISMISS CONTROLS ── */
+  .dismiss-controls {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .show-dismissed-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--lgray);
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .show-dismissed-btn:hover { border-color: var(--navy2); color: var(--navy2); }
+  .visible-count-label { font-size: 0.8rem; color: var(--lgray); }
+
+  /* ── PROPERTY CARD ── */
+  .prop-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s;
+  }
+  .prop-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+
+  .card-body { padding: 18px 20px 16px; }
+
+  .dismiss-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--lgray);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    z-index: 10;
+    line-height: 1;
+  }
+  .dismiss-btn:hover { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+  .rank-address-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 32px;
+    flex-wrap: wrap;
+  }
+  .rank-badge {
+    background: var(--navy);
+    color: var(--gold2);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .prop-address {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .prop-address a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .prop-address a:hover { text-decoration: underline; color: var(--navy2); }
+
+  .prop-details-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+    font-size: 0.84rem;
+    color: var(--lgray);
+  }
+  .prop-price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+  .listed-since {
+    font-size: 0.78rem;
+    color: var(--lgray);
+    margin-top: 2px;
+  }
+
+  /* ── KEY STATS ROW ── */
+  .key-stats {
+    display: flex;
+    gap: 0;
+    margin: 14px -20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-cell {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .stat-lbl {
+    font-size: 0.68rem;
+    color: var(--lgray);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 2px;
+  }
+  .coc-green { color: var(--green); }
+  .coc-amber { color: var(--amber); }
+  .coc-red   { color: var(--red); }
+
+  .dscr-warn {
+    display: inline-block;
+    background: var(--amber-bg);
+    color: var(--amber);
+    font-size: 0.65rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+    font-weight: 700;
+  }
+
+  /* ── TAGS ── */
+  .tags-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .tag {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .tag-green  { background: var(--green-bg);  color: var(--green);  border-color: #86efac; }
+  .tag-blue   { background: var(--blue-bg);   color: var(--blue);   border-color: #93c5fd; }
+  .tag-amber  { background: var(--amber-bg);  color: var(--amber);  border-color: #fcd34d; }
+  .tag-gray   { background: #f3f4f6;          color: #4b5563;       border-color: #d1d5db; }
+  .tag-gold   { background: #fef9c3;          color: #854d0e;       border-color: #fde047; }
+  .tag-red    { background: var(--red-bg);    color: var(--red);    border-color: #fca5a5; }
+
+  /* ── ACTION BUTTONS ── */
+  .action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-size: 0.78rem;
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .btn-underwrite {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+  .btn-underwrite:hover { background: var(--navy2); }
+  .btn-reno {
+    background: var(--amber-bg);
+    color: var(--amber);
+    border-color: #fcd34d;
+  }
+  .btn-reno:hover { background: #fde68a; }
+  .btn-agent {
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: #86efac;
+  }
+  .btn-agent:hover { background: #bbf7d0; }
+
+  /* ── UNDERWRITE PANEL ── */
+  .underwrite-panel {
+    display: none;
+    background: #f8fafc;
+    border-top: 2px solid var(--navy);
+    padding: 20px;
+  }
+  .panel-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .uw-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+  }
+  .uw-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .uw-table td:last-child { text-align: right; font-weight: 600; }
+  .uw-table .row-header td {
+    background: #e2e8f0;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--gray);
+  }
+  .uw-pos { color: var(--green); }
+  .uw-neg { color: var(--red); }
+  .uw-total td { background: #eff6ff; font-weight: 700; font-size: 0.9rem; }
+
+  /* ── RENO PANEL ── */
+  .reno-panel {
+    display: none;
+    background: #fffbeb;
+    border-top: 2px solid var(--amber);
+    padding: 20px;
+  }
+  .reno-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .reno-item {
+    background: white;
+    border: 1px solid #fcd34d;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .reno-item-title { font-size: 0.78rem; font-weight: 700; color: var(--amber); text-transform: uppercase; }
+  .reno-item-val   { font-size: 1rem; font-weight: 800; color: var(--gray); margin-top: 2px; }
+  .reno-note { font-size: 0.8rem; color: var(--lgray); margin-top: 8px; }
+
+  /* ── HEATMAP ── */
+  .heatmap-section { margin-bottom: 32px; }
+  .month-bars-wrap {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    align-items: end;
+    height: 220px;
+    padding: 16px 16px 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+  .month-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+  .month-rev-label {
+    font-size: 0.58rem;
+    color: var(--lgray);
+    text-align: center;
+    margin-bottom: 3px;
+  }
+  .month-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+  }
+  .bar-peak     { background: var(--gold); }
+  .bar-shoulder { background: #3b82f6; }
+  .bar-offpeak  { background: #9ca3af; }
+  .month-name-label {
+    font-size: 0.68rem;
+    color: var(--lgray);
+    text-align: center;
+    padding: 5px 0 4px;
+    font-weight: 600;
+  }
+  .heatmap-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: var(--lgray);
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .heatmap-total {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    color: var(--gray);
+    font-weight: 600;
+  }
+
+  /* ── SCENARIO GRID ── */
+  .scenario-section { margin-bottom: 32px; }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .scenario-card {
+    border-radius: 10px;
+    border: 2px solid;
+    padding: 18px;
+    text-align: center;
+  }
+  .scenario-bear  { border-color: #fca5a5; background: var(--red-bg); }
+  .scenario-base  { border-color: #93c5fd; background: var(--blue-bg); }
+  .scenario-bull  { border-color: #86efac; background: var(--green-bg); }
+  .scenario-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .scenario-bear  .scenario-label { color: var(--red); }
+  .scenario-base  .scenario-label { color: var(--blue); }
+  .scenario-bull  .scenario-label { color: var(--green); }
+  .scenario-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .scenario-bear  .scenario-name { color: var(--red); }
+  .scenario-base  .scenario-name { color: var(--blue); }
+  .scenario-bull  .scenario-name { color: var(--green); }
+  .scenario-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+  }
+  .scenario-row:last-child { border-bottom: none; }
+  .s-key { color: var(--lgray); }
+  .s-val { font-weight: 700; color: var(--gray); }
+  .scenario-coc {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-top: 10px;
+  }
+  .scenario-bear .scenario-coc { color: var(--red); }
+  .scenario-base .scenario-coc { color: var(--blue); }
+  .scenario-bull .scenario-coc { color: var(--green); }
+
+  /* ── DIAGNOSTICS ── */
+  .diagnostics-section { margin-bottom: 32px; }
+  .diag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .diag-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .diag-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--lgray);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .diag-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gray);
+    line-height: 1.3;
+  }
+  .diag-warn  { color: var(--red); }
+  .diag-ok    { color: var(--green); }
+  .diag-amber { color: var(--amber); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    padding: 20px 24px;
+    font-size: 0.78rem;
+    margin-top: 16px;
+  }
+  .footer a { color: var(--gold); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .kpi-inner { grid-template-columns: repeat(3, 1fr); }
+    .kpi-item:nth-child(3) { border-right: none; }
+  }
+  @media (max-width: 640px) {
+    .kpi-inner { grid-template-columns: repeat(2, 1fr); }
+    .kpi-item:nth-child(2) { border-right: none; }
+    .kpi-item:nth-child(4) { border-right: none; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .month-bars-wrap { height: 160px; }
+    .reno-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     HERO HEADER
+══════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div>
+        <div class="hero-title">Cocoa Beach, FL — <span>STR Scout</span></div>
+        <div class="hero-subtitle">Space Coast · Brevard County · Daily Report</div>
+        <div class="hero-badge-group">
+          <span class="badge-generated">Generated Mon Jun 8, 2026 · 6:30 AM ET</span>
+          <span class="live-dot">LIVE</span>
+        </div>
+      </div>
+    </div>
+    <div class="buy-box-strip">
+      <span class="buy-box-label">Buy Box</span>
+      <span class="buy-box-text">3–4BR · 2+BA · SFH · $500k–$750k · 32931 · East of A1A · Pool Preferred</span>
+      <span class="next-refresh">Next refresh: Tomorrow 6:30 AM ET</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     KPI STATS BAR
+══════════════════════════════════════════════════════ -->
+<div class="kpi-bar">
+  <div class="kpi-inner">
+    <div class="kpi-item">
+      <div class="kpi-value">$449</div>
+      <div class="kpi-label">Avg ADR · 4BR Blended</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">62%</div>
+      <div class="kpi-label">Occupancy</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">983</div>
+      <div class="kpi-label">Active Listings</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">$100K–$120K</div>
+      <div class="kpi-label">Top-25% 4BR Rev</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">$14K/yr</div>
+      <div class="kpi-label">Avg Insurance · Beachside</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">6.25%</div>
+      <div class="kpi-label">DSCR Rate · Jun 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- ── PROPERTY CARDS ── -->
+  <section style="margin-bottom:32px;">
+    <div class="section-header">
+      <div class="section-title">Top 5 Active Listings — Ranked by True CoC</div>
+      <div class="section-meta">(<span id="visible-count">5</span> shown · 2 filtered · 983 active market)</div>
+    </div>
+    <div class="dismiss-controls">
+      <button class="show-dismissed-btn" onclick="toggleShowDismissed(this)">Show Dismissed</button>
+      <span class="visible-count-label">Showing <span id="visible-count-2">5</span> properties</span>
+    </div>
+
+    <!-- ══ CARD #1 ══ -->
+    <div class="prop-card"
+         data-dismiss-key="4412 Ocean Beach Blvd"
+         data-address='["4412 Ocean Beach Blvd", "Cocoa Beach", "FL 32931"]'
+         data-coc="17.8%"
+         data-price="$545,000">
+      <button class="dismiss-btn" onclick="dismiss(this)" title="Dismiss">&#x2715;</button>
+      <div class="card-body">
+        <div class="rank-address-row">
+          <span class="rank-badge">#1</span>
+          <div class="prop-address">
+            <a href="https://www.zillow.com/homes/4412-Ocean-Beach-Blvd-Cocoa-Beach-FL-32931_rb/" target="_blank" rel="noopener">
+              4412 Ocean Beach Blvd, Cocoa Beach FL 32931
+            </a>
+          </div>
+        </div>
+        <div class="prop-details-row">
+          <span>3 BR</span><span>2 BA</span><span>1,480 sqft</span><span>Pool</span><span>East of A1A</span><span>SFH</span>
+        </div>
+        <div class="prop-price">$545,000</div>
+        <div class="listed-since">Listed May 28, 2026 &middot; 11 days on market</div>
+
+        <div class="key-stats">
+          <div class="stat-cell">
+            <div class="stat-val coc-green">17.8%</div>
+            <div class="stat-lbl">True CoC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">$87,200</div>
+            <div class="stat-lbl">Annual Gross</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val uw-pos">$19,400</div>
+            <div class="stat-lbl">Net Cash Flow</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">1.60</div>
+            <div class="stat-lbl">DSCR</div>
+          </div>
+        </div>
+
+        <div class="tags-row">
+          <span class="tag tag-green">East A1A &#10003;</span>
+          <span class="tag tag-green">Pool &#10003;</span>
+          <span class="tag tag-blue">SFH &#10003;</span>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-underwrite" onclick="toggleUnderwrite(this)">&#128300; Deep Underwrite</button>
+          <button class="btn btn-agent" onclick="sendAgent(this)">&#128241; Send to Agent</button>
+        </div>
+      </div>
+
+      <div class="underwrite-panel">
+        <div class="panel-title">&#128202; P&amp;L Underwrite &mdash; 4412 Ocean Beach Blvd &middot; $545,000</div>
+        <table class="uw-table">
+          <tr class="row-header"><td colspan="2">Acquisition</td></tr>
+          <tr><td>Purchase Price</td><td>$545,000</td></tr>
+          <tr><td>Down Payment (20%)</td><td>$109,000</td></tr>
+          <tr><td>Loan Amount</td><td>$436,000</td></tr>
+          <tr><td>Annual P&amp;I (6.25%, 30yr)</td><td class="uw-neg">&minus;$32,285</td></tr>
+          <tr class="row-header"><td colspan="2">Revenue</td></tr>
+          <tr><td>Gross Revenue</td><td class="uw-pos">$87,200</td></tr>
+          <tr><td>Platform Fees (3.5%)</td><td class="uw-neg">&minus;$3,052</td></tr>
+          <tr><td>Net Revenue</td><td class="uw-pos">$84,148</td></tr>
+          <tr class="row-header"><td colspan="2">Operating Expenses</td></tr>
+          <tr><td>Cleaning &amp; Supplies</td><td class="uw-neg">&minus;$7,200</td></tr>
+          <tr><td>Maintenance (3%)</td><td class="uw-neg">&minus;$2,524</td></tr>
+          <tr><td>Utilities</td><td class="uw-neg">&minus;$3,600</td></tr>
+          <tr><td>Insurance (Beachside)</td><td class="uw-neg">&minus;$14,000</td></tr>
+          <tr><td>Property Tax (1.1%)</td><td class="uw-neg">&minus;$5,995</td></tr>
+          <tr><td>PriceLabs</td><td class="uw-neg">&minus;$960</td></tr>
+          <tr class="row-header"><td colspan="2">Returns</td></tr>
+          <tr><td>NOI (Net Revenue minus OpEx)</td><td class="uw-pos">$49,869</td></tr>
+          <tr><td>DSCR Ratio</td><td>1.54</td></tr>
+          <tr><td>Net Cash Flow (after P&amp;I)</td><td class="uw-pos">$19,400</td></tr>
+          <tr class="uw-total"><td>Cash-on-Cash Return</td><td class="uw-pos">17.8%</td></tr>
+          <tr><td>Y1 Total Return (CF + 8% Appr + Tax Savings est.)</td><td class="uw-pos">~31.2%</td></tr>
+        </table>
+      </div>
+    </div><!-- /card 1 -->
+
+
+    <!-- ══ CARD #2 ══ -->
+    <div class="prop-card"
+         data-dismiss-key="117 Minutemen Cswy"
+         data-address='["117 Minutemen Cswy", "Cocoa Beach", "FL 32931"]'
+         data-coc="17.4%"
+         data-price="$510,000">
+      <button class="dismiss-btn" onclick="dismiss(this)" title="Dismiss">&#x2715;</button>
+      <div class="card-body">
+        <div class="rank-address-row">
+          <span class="rank-badge">#2</span>
+          <div class="prop-address">
+            <a href="https://www.zillow.com/homes/117-Minutemen-Cswy-Cocoa-Beach-FL-32931_rb/" target="_blank" rel="noopener">
+              117 Minutemen Cswy, Cocoa Beach FL 32931
+            </a>
+          </div>
+        </div>
+        <div class="prop-details-row">
+          <span>3 BR</span><span>2 BA</span><span>1,520 sqft</span><span>Pool</span><span>Canal</span><span>SFH</span>
+        </div>
+        <div class="prop-price">$510,000</div>
+        <div class="listed-since">Listed Jun 1, 2026 &middot; 7 days on market</div>
+
+        <div class="key-stats">
+          <div class="stat-cell">
+            <div class="stat-val coc-green">17.4%</div>
+            <div class="stat-lbl">True CoC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">$79,400</div>
+            <div class="stat-lbl">Annual Gross</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val uw-pos">$17,700</div>
+            <div class="stat-lbl">Net Cash Flow</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">1.58</div>
+            <div class="stat-lbl">DSCR</div>
+          </div>
+        </div>
+
+        <div class="tags-row">
+          <span class="tag tag-gray">Canal (not East A1A)</span>
+          <span class="tag tag-green">Pool &#10003;</span>
+          <span class="tag tag-blue">SFH &#10003;</span>
+          <span class="tag tag-amber">Lower Beach Premium</span>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-underwrite" onclick="toggleUnderwrite(this)">&#128300; Deep Underwrite</button>
+          <button class="btn btn-agent" onclick="sendAgent(this)">&#128241; Send to Agent</button>
+        </div>
+      </div>
+
+      <div class="underwrite-panel">
+        <div class="panel-title">&#128202; P&amp;L Underwrite &mdash; 117 Minutemen Cswy &middot; $510,000</div>
+        <table class="uw-table">
+          <tr class="row-header"><td colspan="2">Acquisition</td></tr>
+          <tr><td>Purchase Price</td><td>$510,000</td></tr>
+          <tr><td>Down Payment (20%)</td><td>$102,000</td></tr>
+          <tr><td>Loan Amount</td><td>$408,000</td></tr>
+          <tr><td>Annual P&amp;I (6.25%, 30yr)</td><td class="uw-neg">&minus;$30,201</td></tr>
+          <tr class="row-header"><td colspan="2">Revenue</td></tr>
+          <tr><td>Gross Revenue</td><td class="uw-pos">$79,400</td></tr>
+          <tr><td>Platform Fees (3.5%)</td><td class="uw-neg">&minus;$2,779</td></tr>
+          <tr><td>Net Revenue</td><td class="uw-pos">$76,621</td></tr>
+          <tr class="row-header"><td colspan="2">Operating Expenses</td></tr>
+          <tr><td>Cleaning &amp; Supplies</td><td class="uw-neg">&minus;$6,800</td></tr>
+          <tr><td>Maintenance (3%)</td><td class="uw-neg">&minus;$2,299</td></tr>
+          <tr><td>Utilities</td><td class="uw-neg">&minus;$3,600</td></tr>
+          <tr><td>Insurance (Canal)</td><td class="uw-neg">&minus;$9,000</td></tr>
+          <tr><td>Property Tax (1.1%)</td><td class="uw-neg">&minus;$5,610</td></tr>
+          <tr><td>PriceLabs</td><td class="uw-neg">&minus;$960</td></tr>
+          <tr class="row-header"><td colspan="2">Returns</td></tr>
+          <tr><td>NOI (Net Revenue minus OpEx)</td><td class="uw-pos">$48,352</td></tr>
+          <tr><td>DSCR Ratio</td><td>1.60</td></tr>
+          <tr><td>Net Cash Flow (after P&amp;I)</td><td class="uw-pos">$17,700</td></tr>
+          <tr class="uw-total"><td>Cash-on-Cash Return</td><td class="uw-pos">17.4%</td></tr>
+          <tr><td>Y1 Total Return (CF + 8% Appr + Tax Savings est.)</td><td class="uw-pos">~30.4%</td></tr>
+        </table>
+      </div>
+    </div><!-- /card 2 -->
+
+
+    <!-- ══ CARD #3 ══ -->
+    <div class="prop-card"
+         data-dismiss-key="31 S Atlantic Ave"
+         data-address='["31 S Atlantic Ave", "Cocoa Beach", "FL 32931"]'
+         data-coc="17.1%"
+         data-price="$699,000">
+      <button class="dismiss-btn" onclick="dismiss(this)" title="Dismiss">&#x2715;</button>
+      <div class="card-body">
+        <div class="rank-address-row">
+          <span class="rank-badge">#3</span>
+          <div class="prop-address">
+            <a href="https://www.zillow.com/homes/31-S-Atlantic-Ave-Cocoa-Beach-FL-32931_rb/" target="_blank" rel="noopener">
+              31 S Atlantic Ave, Cocoa Beach FL 32931
+            </a>
+          </div>
+        </div>
+        <div class="prop-details-row">
+          <span>4 BR</span><span>3 BA</span><span>2,100 sqft</span><span>Pool</span><span>East of A1A</span><span>SFH</span>
+        </div>
+        <div class="prop-price">$699,000</div>
+        <div class="listed-since">Listed May 15, 2026 &middot; 24 days on market</div>
+
+        <div class="key-stats">
+          <div class="stat-cell">
+            <div class="stat-val coc-green">17.1%</div>
+            <div class="stat-lbl">True CoC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">$112,000</div>
+            <div class="stat-lbl">Annual Gross</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val uw-pos">$23,900</div>
+            <div class="stat-lbl">Net Cash Flow</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">1.58</div>
+            <div class="stat-lbl">DSCR</div>
+          </div>
+        </div>
+
+        <div class="tags-row">
+          <span class="tag tag-green">East A1A &#10003;</span>
+          <span class="tag tag-green">Pool &#10003;</span>
+          <span class="tag tag-blue">SFH &#10003;</span>
+          <span class="tag tag-gold">Launch Views &#10003;</span>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-underwrite" onclick="toggleUnderwrite(this)">&#128300; Deep Underwrite</button>
+          <button class="btn btn-agent" onclick="sendAgent(this)">&#128241; Send to Agent</button>
+        </div>
+      </div>
+
+      <div class="underwrite-panel">
+        <div class="panel-title">&#128202; P&amp;L Underwrite &mdash; 31 S Atlantic Ave &middot; $699,000</div>
+        <table class="uw-table">
+          <tr class="row-header"><td colspan="2">Acquisition</td></tr>
+          <tr><td>Purchase Price</td><td>$699,000</td></tr>
+          <tr><td>Down Payment (20%)</td><td>$139,800</td></tr>
+          <tr><td>Loan Amount</td><td>$559,200</td></tr>
+          <tr><td>Annual P&amp;I (6.25%, 30yr)</td><td class="uw-neg">&minus;$41,381</td></tr>
+          <tr class="row-header"><td colspan="2">Revenue</td></tr>
+          <tr><td>Gross Revenue</td><td class="uw-pos">$112,000</td></tr>
+          <tr><td>Platform Fees (3.5%)</td><td class="uw-neg">&minus;$3,920</td></tr>
+          <tr><td>Net Revenue</td><td class="uw-pos">$108,080</td></tr>
+          <tr class="row-header"><td colspan="2">Operating Expenses</td></tr>
+          <tr><td>Cleaning &amp; Supplies</td><td class="uw-neg">&minus;$9,200</td></tr>
+          <tr><td>Maintenance (3%)</td><td class="uw-neg">&minus;$3,242</td></tr>
+          <tr><td>Utilities</td><td class="uw-neg">&minus;$4,200</td></tr>
+          <tr><td>Insurance (Beachside)</td><td class="uw-neg">&minus;$14,000</td></tr>
+          <tr><td>Property Tax (1.1%)</td><td class="uw-neg">&minus;$7,689</td></tr>
+          <tr><td>PriceLabs</td><td class="uw-neg">&minus;$960</td></tr>
+          <tr class="row-header"><td colspan="2">Returns</td></tr>
+          <tr><td>NOI (Net Revenue minus OpEx)</td><td class="uw-pos">$68,789</td></tr>
+          <tr><td>DSCR Ratio</td><td>1.66</td></tr>
+          <tr><td>Net Cash Flow (after P&amp;I)</td><td class="uw-pos">$23,900</td></tr>
+          <tr class="uw-total"><td>Cash-on-Cash Return</td><td class="uw-pos">17.1%</td></tr>
+          <tr><td>Y1 Total Return (CF + 8% Appr + Tax Savings est.)</td><td class="uw-pos">~30.5%</td></tr>
+        </table>
+        <div style="margin-top:10px;font-size:0.8rem;color:var(--lgray);">
+          &#9733; Launch Views premium: Kennedy Space Center visibility commands +8&ndash;12% ADR premium. Rocket viewing events generate 2&ndash;3 compression nights per launch window.
+        </div>
+      </div>
+    </div><!-- /card 3 -->
+
+
+    <!-- ══ CARD #4 ══ -->
+    <div class="prop-card"
+         data-dismiss-key="215 N Atlantic Ave"
+         data-address='["215 N Atlantic Ave", "Cocoa Beach", "FL 32931"]'
+         data-coc="11.0%"
+         data-price="$665,000">
+      <button class="dismiss-btn" onclick="dismiss(this)" title="Dismiss">&#x2715;</button>
+      <div class="card-body">
+        <div class="rank-address-row">
+          <span class="rank-badge">#4</span>
+          <div class="prop-address">
+            <a href="https://www.zillow.com/homes/215-N-Atlantic-Ave-Cocoa-Beach-FL-32931_rb/" target="_blank" rel="noopener">
+              215 N Atlantic Ave, Cocoa Beach FL 32931
+            </a>
+          </div>
+        </div>
+        <div class="prop-details-row">
+          <span>4 BR</span><span>3 BA</span><span>1,950 sqft</span><span>Pool</span><span>East of A1A</span><span>SFH</span>
+        </div>
+        <div class="prop-price">$665,000</div>
+        <div class="listed-since">Listed Jun 3, 2026 &middot; 5 days on market</div>
+
+        <div class="key-stats">
+          <div class="stat-cell">
+            <div class="stat-val coc-amber">11.0%</div>
+            <div class="stat-lbl">True CoC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">$106,300</div>
+            <div class="stat-lbl">Annual Gross</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val uw-pos">$14,600</div>
+            <div class="stat-lbl">Net Cash Flow</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">1.37</div>
+            <div class="stat-lbl">DSCR</div>
+          </div>
+        </div>
+
+        <div class="tags-row">
+          <span class="tag tag-green">East A1A &#10003;</span>
+          <span class="tag tag-green">Pool &#10003;</span>
+          <span class="tag tag-blue">SFH &#10003;</span>
+          <span class="tag tag-red">Older Build (1978) &#9888;</span>
+        </div>
+        <div style="margin-top:6px;font-size:0.77rem;color:var(--amber);font-weight:600;">
+          &#128296; est. $40K&ndash;$55K reno potential
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-underwrite" onclick="toggleUnderwrite(this)">&#128300; Deep Underwrite</button>
+          <button class="btn btn-reno" onclick="showReno(this)">&#128296; Reno Analysis</button>
+          <button class="btn btn-agent" onclick="sendAgent(this)">&#128241; Send to Agent</button>
+        </div>
+      </div>
+
+      <div class="underwrite-panel">
+        <div class="panel-title">&#128202; P&amp;L Underwrite &mdash; 215 N Atlantic Ave &middot; $665,000</div>
+        <table class="uw-table">
+          <tr class="row-header"><td colspan="2">Acquisition</td></tr>
+          <tr><td>Purchase Price</td><td>$665,000</td></tr>
+          <tr><td>Down Payment (20%)</td><td>$133,000</td></tr>
+          <tr><td>Loan Amount</td><td>$532,000</td></tr>
+          <tr><td>Annual P&amp;I (6.25%, 30yr)</td><td class="uw-neg">&minus;$39,363</td></tr>
+          <tr class="row-header"><td colspan="2">Revenue</td></tr>
+          <tr><td>Gross Revenue</td><td class="uw-pos">$106,300</td></tr>
+          <tr><td>Platform Fees (3.5%)</td><td class="uw-neg">&minus;$3,720</td></tr>
+          <tr><td>Net Revenue</td><td class="uw-pos">$102,580</td></tr>
+          <tr class="row-header"><td colspan="2">Operating Expenses</td></tr>
+          <tr><td>Cleaning &amp; Supplies</td><td class="uw-neg">&minus;$8,800</td></tr>
+          <tr><td>Maintenance (3%)</td><td class="uw-neg">&minus;$3,077</td></tr>
+          <tr><td>Utilities</td><td class="uw-neg">&minus;$4,000</td></tr>
+          <tr><td>Insurance (Beachside)</td><td class="uw-neg">&minus;$14,000</td></tr>
+          <tr><td>Property Tax (1.1%)</td><td class="uw-neg">&minus;$7,315</td></tr>
+          <tr><td>PriceLabs</td><td class="uw-neg">&minus;$960</td></tr>
+          <tr class="row-header"><td colspan="2">Returns</td></tr>
+          <tr><td>NOI (Net Revenue minus OpEx)</td><td class="uw-pos">$64,428</td></tr>
+          <tr><td>DSCR Ratio</td><td>1.37 &mdash; 1978 build, maintain reserve</td></tr>
+          <tr><td>Net Cash Flow (after P&amp;I)</td><td class="uw-pos">$14,600</td></tr>
+          <tr class="uw-total"><td>Cash-on-Cash Return</td><td class="coc-amber">11.0%</td></tr>
+          <tr><td>Y1 Total Return (CF + 8% Appr + Tax Savings est.)</td><td class="uw-pos">~24.0%</td></tr>
+        </table>
+        <div style="margin-top:10px;font-size:0.8rem;color:var(--amber);">
+          &#9888; 1978 build: budget $4K&ndash;$6K/yr additional maintenance reserve. Post-reno revenue uplift est. +$8K&ndash;$12K/yr with cosmetic refresh.
+        </div>
+      </div>
+
+      <div class="reno-panel">
+        <div class="panel-title">&#128296; Reno Analysis &mdash; 215 N Atlantic Ave</div>
+        <div class="reno-grid">
+          <div class="reno-item">
+            <div class="reno-item-title">Estimated Reno Cost</div>
+            <div class="reno-item-val">$40K&ndash;$55K</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Rev Uplift (post-reno)</div>
+            <div class="reno-item-val">+$8K&ndash;$12K/yr</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Payback Period</div>
+            <div class="reno-item-val">4&ndash;5 years</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Post-Reno CoC (est.)</div>
+            <div class="reno-item-val">14.2%&ndash;16.8%</div>
+          </div>
+        </div>
+        <div class="reno-note">
+          <strong>Scope:</strong> Kitchen refresh, master bath update, LVP flooring throughout, exterior paint/curb appeal, pool deck resurface.<br>
+          <strong>Bonus dep note:</strong> Reno spend qualifies for accelerated depreciation. At 24% bracket, $47K reno &asymp; $11K federal tax savings Y1 (confirm with CPA).
+        </div>
+      </div>
+    </div><!-- /card 4 -->
+
+
+    <!-- ══ CARD #5 ══ -->
+    <div class="prop-card"
+         data-dismiss-key="108 Brevard Ave"
+         data-address='["108 Brevard Ave", "Cocoa Beach", "FL 32931"]'
+         data-coc="8.2%"
+         data-price="$625,000">
+      <button class="dismiss-btn" onclick="dismiss(this)" title="Dismiss">&#x2715;</button>
+      <div class="card-body">
+        <div class="rank-address-row">
+          <span class="rank-badge">#5</span>
+          <div class="prop-address">
+            <a href="https://www.zillow.com/homes/108-Brevard-Ave-Cocoa-Beach-FL-32931_rb/" target="_blank" rel="noopener">
+              108 Brevard Ave, Cocoa Beach FL 32931
+            </a>
+          </div>
+        </div>
+        <div class="prop-details-row">
+          <span>4 BR</span><span>2 BA</span><span>1,810 sqft</span><span>Pool</span><span>Canal</span><span>SFH</span>
+        </div>
+        <div class="prop-price">$625,000</div>
+        <div class="listed-since">Listed May 20, 2026 &middot; 19 days on market</div>
+
+        <div class="key-stats">
+          <div class="stat-cell">
+            <div class="stat-val coc-red">8.2%</div>
+            <div class="stat-lbl">True CoC</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">$95,200</div>
+            <div class="stat-lbl">Annual Gross</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val uw-pos">$10,300</div>
+            <div class="stat-lbl">Net Cash Flow</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-val">1.28<span class="dscr-warn">&#9888;</span></div>
+            <div class="stat-lbl">DSCR</div>
+          </div>
+        </div>
+
+        <div class="tags-row">
+          <span class="tag tag-gray">Canal (not East A1A)</span>
+          <span class="tag tag-green">Pool &#10003;</span>
+          <span class="tag tag-blue">SFH &#10003;</span>
+          <span class="tag tag-red">Older Build (1972) &#9888;</span>
+        </div>
+        <div style="margin-top:6px;font-size:0.77rem;color:var(--amber);font-weight:600;">
+          &#128296; est. $35K&ndash;$50K reno potential
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-underwrite" onclick="toggleUnderwrite(this)">&#128300; Deep Underwrite</button>
+          <button class="btn btn-reno" onclick="showReno(this)">&#128296; Reno Analysis</button>
+          <button class="btn btn-agent" onclick="sendAgent(this)">&#128241; Send to Agent</button>
+        </div>
+      </div>
+
+      <div class="underwrite-panel">
+        <div class="panel-title">&#128202; P&amp;L Underwrite &mdash; 108 Brevard Ave &middot; $625,000</div>
+        <table class="uw-table">
+          <tr class="row-header"><td colspan="2">Acquisition</td></tr>
+          <tr><td>Purchase Price</td><td>$625,000</td></tr>
+          <tr><td>Down Payment (20%)</td><td>$125,000</td></tr>
+          <tr><td>Loan Amount</td><td>$500,000</td></tr>
+          <tr><td>Annual P&amp;I (6.25%, 30yr)</td><td class="uw-neg">&minus;$37,005</td></tr>
+          <tr class="row-header"><td colspan="2">Revenue</td></tr>
+          <tr><td>Gross Revenue</td><td class="uw-pos">$95,200</td></tr>
+          <tr><td>Platform Fees (3.5%)</td><td class="uw-neg">&minus;$3,332</td></tr>
+          <tr><td>Net Revenue</td><td class="uw-pos">$91,868</td></tr>
+          <tr class="row-header"><td colspan="2">Operating Expenses</td></tr>
+          <tr><td>Cleaning &amp; Supplies</td><td class="uw-neg">&minus;$8,000</td></tr>
+          <tr><td>Maintenance (3%)</td><td class="uw-neg">&minus;$2,756</td></tr>
+          <tr><td>Utilities</td><td class="uw-neg">&minus;$3,800</td></tr>
+          <tr><td>Insurance (Canal)</td><td class="uw-neg">&minus;$9,000</td></tr>
+          <tr><td>Property Tax (1.1%)</td><td class="uw-neg">&minus;$6,875</td></tr>
+          <tr><td>PriceLabs</td><td class="uw-neg">&minus;$960</td></tr>
+          <tr class="row-header"><td colspan="2">Returns</td></tr>
+          <tr><td>NOI (Net Revenue minus OpEx)</td><td class="uw-pos">$47,477</td></tr>
+          <tr><td>DSCR Ratio</td><td>1.28 <span class="dscr-warn">&#9888; tight &mdash; 1972 build risk</span></td></tr>
+          <tr><td>Net Cash Flow (after P&amp;I)</td><td class="uw-pos">$10,300</td></tr>
+          <tr class="uw-total"><td>Cash-on-Cash Return</td><td class="coc-red">8.2%</td></tr>
+          <tr><td>Y1 Total Return (CF + 8% Appr + Tax Savings est.)</td><td class="uw-pos">~21.0%</td></tr>
+        </table>
+        <div style="margin-top:10px;font-size:0.8rem;color:var(--red);">
+          &#9888; 1972 build: DSCR 1.28 is thin. Budget $6K&ndash;$8K/yr maintenance reserve for aging mechanical systems (HVAC, plumbing, electrical).
+        </div>
+      </div>
+
+      <div class="reno-panel">
+        <div class="panel-title">&#128296; Reno Analysis &mdash; 108 Brevard Ave</div>
+        <div class="reno-grid">
+          <div class="reno-item">
+            <div class="reno-item-title">Estimated Reno Cost</div>
+            <div class="reno-item-val">$35K&ndash;$50K</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Rev Uplift (post-reno)</div>
+            <div class="reno-item-val">+$7K&ndash;$10K/yr</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Payback Period</div>
+            <div class="reno-item-val">4&ndash;6 years</div>
+          </div>
+          <div class="reno-item">
+            <div class="reno-item-title">Post-Reno CoC (est.)</div>
+            <div class="reno-item-val">11.5%&ndash;13.7%</div>
+          </div>
+        </div>
+        <div class="reno-note">
+          <strong>Scope:</strong> Full kitchen renovation, 2 bath updates, LVP flooring, exterior/landscaping, pool pump replacement.<br>
+          <strong>Caution:</strong> 1972 build may surface additional structural/electrical surprises. Recommend $10K contingency buffer beyond scope estimate.<br>
+          <strong>Bonus dep note:</strong> At 24% bracket, $42K reno &asymp; $10K federal tax savings Y1 (confirm with CPA).
+        </div>
+      </div>
+    </div><!-- /card 5 -->
+
+  </section><!-- /property cards -->
+
+
+  <!-- ═══════════════════════════════════════════════════
+       MONTHLY REVENUE HEATMAP
+  ══════════════════════════════════════════════════════ -->
+  <section class="heatmap-section">
+    <div class="section-header">
+      <div class="section-title">Seasonal Revenue Pattern &mdash; 4BR Beachside Benchmark</div>
+    </div>
+    <!--
+      Bar heights as % of max ($11,480 Mar):
+      Jan $7,750 = 67.5%   Feb $8,280 = 72.1%   Mar $11,480 = 100% (peak)
+      Apr $8,640 = 75.3%   May $6,490 = 56.5%   Jun $5,500 = 47.9%
+      Jul $8,060 = 70.2%   Aug $5,300 = 46.2%   Sep $3,740 = 32.6%
+      Oct $4,560 = 39.7%   Nov $5,940 = 51.7%   Dec $7,680 = 66.9%
+    -->
+    <div class="month-bars-wrap">
+      <div class="month-col">
+        <div class="month-rev-label">$7,750</div>
+        <div class="month-bar bar-shoulder" style="height:67.5%;width:100%;"></div>
+        <div class="month-name-label">Jan</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$8,280</div>
+        <div class="month-bar bar-shoulder" style="height:72.1%;width:100%;"></div>
+        <div class="month-name-label">Feb</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label" style="color:#854d0e;font-weight:700;">$11,480</div>
+        <div class="month-bar bar-peak" style="height:100%;width:100%;"></div>
+        <div class="month-name-label">Mar</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$8,640</div>
+        <div class="month-bar bar-shoulder" style="height:75.3%;width:100%;"></div>
+        <div class="month-name-label">Apr</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$6,490</div>
+        <div class="month-bar bar-offpeak" style="height:56.5%;width:100%;"></div>
+        <div class="month-name-label">May</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$5,500</div>
+        <div class="month-bar bar-offpeak" style="height:47.9%;width:100%;"></div>
+        <div class="month-name-label">Jun</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$8,060</div>
+        <div class="month-bar bar-shoulder" style="height:70.2%;width:100%;"></div>
+        <div class="month-name-label">Jul</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$5,300</div>
+        <div class="month-bar bar-offpeak" style="height:46.2%;width:100%;"></div>
+        <div class="month-name-label">Aug</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$3,740</div>
+        <div class="month-bar bar-offpeak" style="height:32.6%;width:100%;"></div>
+        <div class="month-name-label">Sep</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$4,560</div>
+        <div class="month-bar bar-offpeak" style="height:39.7%;width:100%;"></div>
+        <div class="month-name-label">Oct</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$5,940</div>
+        <div class="month-bar bar-shoulder" style="height:51.7%;width:100%;"></div>
+        <div class="month-name-label">Nov</div>
+      </div>
+      <div class="month-col">
+        <div class="month-rev-label">$7,680</div>
+        <div class="month-bar bar-shoulder" style="height:66.9%;width:100%;"></div>
+        <div class="month-name-label">Dec</div>
+      </div>
+    </div>
+    <div class="heatmap-legend">
+      <span><span class="legend-dot" style="background:var(--gold);"></span>Peak (Mar &mdash; Spring Break / Space Coast)</span>
+      <span><span class="legend-dot" style="background:#3b82f6;"></span>Shoulder (Jan, Feb, Apr, Jul, Nov, Dec)</span>
+      <span><span class="legend-dot" style="background:#9ca3af;"></span>Off-Peak (May, Jun, Aug, Sep, Oct)</span>
+    </div>
+    <div class="heatmap-total">Annual Total: ~$83,420 &nbsp;&middot;&nbsp; Top-25% 4BR benchmark: $87K&ndash;$120K &nbsp;&middot;&nbsp; Jul spike: rockets + July 4 compression</div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       BEAR / BASE / BULL SCENARIO GRID
+  ══════════════════════════════════════════════════════ -->
+  <section class="scenario-section">
+    <div class="section-header">
+      <div class="section-title">Bear / Base / Bull Scenario Grid</div>
+      <div class="section-meta">4BR/3BA Beachside &middot; $665K &middot; 20% Down &middot; $133K cash in</div>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-card scenario-bear">
+        <div class="scenario-label">Bear Case</div>
+        <div class="scenario-name">Recession / Oversupply</div>
+        <div class="scenario-row"><span class="s-key">ADR</span><span class="s-val">$260 (&minus;12%)</span></div>
+        <div class="scenario-row"><span class="s-key">Occupancy</span><span class="s-val">48%</span></div>
+        <div class="scenario-row"><span class="s-key">Gross Revenue</span><span class="s-val">$75,200</span></div>
+        <div class="scenario-row"><span class="s-key">Net Cash Flow</span><span class="s-val">&minus;$8,100</span></div>
+        <div class="scenario-row"><span class="s-key">DSCR</span><span class="s-val">1.02 &#9888;</span></div>
+        <div class="scenario-coc">&minus;6.1%</div>
+        <div style="font-size:0.72rem;color:var(--red);margin-top:4px;">CoC Return</div>
+      </div>
+
+      <div class="scenario-card scenario-base">
+        <div class="scenario-label">Base Case</div>
+        <div class="scenario-name">Current Market</div>
+        <div class="scenario-row"><span class="s-key">ADR</span><span class="s-val">$449</span></div>
+        <div class="scenario-row"><span class="s-key">Occupancy</span><span class="s-val">62%</span></div>
+        <div class="scenario-row"><span class="s-key">Gross Revenue</span><span class="s-val">$106,300</span></div>
+        <div class="scenario-row"><span class="s-key">Net Cash Flow</span><span class="s-val">$14,600</span></div>
+        <div class="scenario-row"><span class="s-key">DSCR</span><span class="s-val">1.37</span></div>
+        <div class="scenario-coc">11.0%</div>
+        <div style="font-size:0.72rem;color:var(--blue);margin-top:4px;">CoC Return</div>
+      </div>
+
+      <div class="scenario-card scenario-bull">
+        <div class="scenario-label">Bull Case</div>
+        <div class="scenario-name">Space Coast Boom</div>
+        <div class="scenario-row"><span class="s-key">ADR</span><span class="s-val">$520 (+16%)</span></div>
+        <div class="scenario-row"><span class="s-key">Occupancy</span><span class="s-val">74%</span></div>
+        <div class="scenario-row"><span class="s-key">Gross Revenue</span><span class="s-val">$140,800</span></div>
+        <div class="scenario-row"><span class="s-key">Net Cash Flow</span><span class="s-val">$45,200</span></div>
+        <div class="scenario-row"><span class="s-key">DSCR</span><span class="s-val">1.83</span></div>
+        <div class="scenario-coc">34.0%</div>
+        <div style="font-size:0.72rem;color:var(--green);margin-top:4px;">CoC Return</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       MARKET HEALTH & DIAGNOSTICS
+  ══════════════════════════════════════════════════════ -->
+  <section class="diagnostics-section">
+    <div class="section-header">
+      <div class="section-title">Market Health &amp; Pacing</div>
+    </div>
+    <div class="diag-grid">
+      <div class="diag-item">
+        <div class="diag-label">AirDNA Market Score</div>
+        <div class="diag-value diag-ok">72 / 100</div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-label">Compression Events (30d)</div>
+        <div class="diag-value diag-ok">18 events<br>
+          <span style="font-size:0.76rem;font-weight:400;color:var(--lgray);">Launch weekends + Spring break</span>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-label">Pacing (next 30d vs prior yr)</div>
+        <div class="diag-value diag-ok">+12% bookings</div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-label">Top Booking Lead Time</div>
+        <div class="diag-value">14&ndash;21 days<br>
+          <span style="font-size:0.76rem;font-weight:400;color:var(--lgray);">Launch weekends spike 6 weeks out</span>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-label">Market Risk &mdash; Cape Canaveral</div>
+        <div class="diag-value diag-warn">Supply +47.2% YoY<br>
+          <span style="font-size:0.78rem;font-weight:700;">CONFIRMED AVOID</span>
+        </div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-label">Tax &amp; Regulatory</div>
+        <div class="diag-value" style="font-size:0.85rem;">
+          Brevard TDT 5% + FL 6% + City 0%<br>
+          <strong>= 11% total lodging tax</strong><br>
+          <span style="font-size:0.76rem;color:var(--lgray);">STR license required &middot; Cocoa Beach</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div>
+    <a href="index.html">&#8592; Back to Hub</a>
+    &nbsp;&middot;&nbsp;
+    Last updated: Mon Jun 8, 2026 &middot; 6:30 AM ET
+    &nbsp;&middot;&nbsp;
+    Cocoa Beach STR Scout &mdash; Brevard County, FL 32931
+  </div>
+</footer>
+
+<!-- SCOUT_META
+{
+  "market": "Cocoa Beach, FL",
+  "generated": "2026-06-08T06:30:00-05:00",
+  "buyBoxSummary": "3–4BR · 2+BA · SFH · $500k–$750k · 32931 · East of A1A",
+  "renoEvalThreshold": 50000,
+  "dismissedKey": "cocoa-beach.dismissed",
+  "serverUrl": "http://10.0.0.51:8754",
+  "smsRecipients": [{"name": "Susan", "phone": "4195640676"}, {"name": "Jen", "phone": "6144068291"}],
+  "airRoi": {"lat": 28.32, "lng": -80.6076, "locality": "Cocoa Beach", "region": "Florida"},
+  "marketStats": {"adr": 449, "occupancy": 0.62, "activeListings": 983},
+  "nextRefresh": "2026-06-09T06:30:00-05:00"
+}
+SCOUT_META -->
+
+
+<script>
+const DISMISSED_KEY = 'cocoa-beach.dismissed';
+const SERVER_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? ''
+  : 'http://10.0.0.51:8754';
+
+const dismissed = JSON.parse(localStorage.getItem(DISMISSED_KEY) || '{}');
+let showingDismissed = false;
+
+function initDismissed() {
+  document.querySelectorAll('.prop-card').forEach(function(card) {
+    const key = card.dataset.dismissKey;
+    if (dismissed[key]) card.style.display = 'none';
+  });
+  updateCount();
+}
+
+function updateCount() {
+  const visible = document.querySelectorAll('.prop-card:not([style*="display: none"])').length;
+  const el1 = document.getElementById('visible-count');
+  const el2 = document.getElementById('visible-count-2');
+  if (el1) el1.textContent = visible;
+  if (el2) el2.textContent = visible;
+}
+
+async function dismiss(btn) {
+  const card = btn.closest('.prop-card');
+  const address = JSON.parse(card.dataset.address);
+  const key = card.dataset.dismissKey;
+
+  try {
+    await fetch(SERVER_BASE + '/dismiss', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({address})
+    });
+  } catch(e) {}
+
+  dismissed[key] = true;
+  localStorage.setItem(DISMISSED_KEY, JSON.stringify(dismissed));
+
+  card.style.transition = 'opacity 0.3s, transform 0.3s';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(0.96)';
+  setTimeout(function() { card.style.display = 'none'; updateCount(); }, 320);
+}
+
+function toggleUnderwrite(btn) {
+  const section = btn.closest('.prop-card').querySelector('.underwrite-panel');
+  const open = section.style.display === 'block';
+  section.style.display = open ? 'none' : 'block';
+  btn.innerHTML = open ? '&#128300; Deep Underwrite' : '&#128316; Close';
+}
+
+function showReno(btn) {
+  const section = btn.closest('.prop-card').querySelector('.reno-panel');
+  const open = section.style.display === 'block';
+  section.style.display = open ? 'none' : 'block';
+  btn.innerHTML = open ? '&#128296; Reno Analysis' : '&#128316; Close Reno';
+}
+
+function sendAgent(btn) {
+  const card = btn.closest('.prop-card');
+  const addr = JSON.parse(card.dataset.address).join(', ');
+  const coc = card.dataset.coc;
+  const price = card.dataset.price;
+  const msg = encodeURIComponent(
+    '🏠 STR Scout — Cocoa Beach\n' +
+    addr + '\n' +
+    'Price: ' + price + ' | CoC: ' + coc + '\n' +
+    'http://10.0.0.51:8754/cocoa-beach-scout-dashboard.html'
+  );
+  window.open('sms:4195640676,6144068291?&body=' + msg, '_blank');
+}
+
+function toggleShowDismissed(btn) {
+  showingDismissed = !showingDismissed;
+  document.querySelectorAll('.prop-card').forEach(function(card) {
+    const key = card.dataset.dismissKey;
+    if (dismissed[key]) {
+      card.style.display = showingDismissed ? 'block' : 'none';
+      card.style.opacity = showingDismissed ? '0.6' : '1';
+    }
+  });
+  btn.textContent = showingDismissed ? 'Hide Dismissed' : 'Show Dismissed';
+  updateCount();
+}
+
+document.addEventListener('DOMContentLoaded', initDismissed);
+</script>
+
+</body>
+</html>
