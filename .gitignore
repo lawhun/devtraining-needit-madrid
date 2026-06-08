@@ -1,0 +1,9 @@
+# Claude Code local settings and agent worktrees
+.claude/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
