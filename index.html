@@ -457,6 +457,18 @@
   .cta-btn.disabled { background: #f3f4f6; color: #9ca3af; cursor: default; }
   .cta-btn.disabled:hover { opacity: 1; transform: none; }
 
+  .cta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .cta-btn.sm {
+    font-size: 12px;
+    padding: 11px 6px;
+    letter-spacing: 0;
+  }
+
   /* Status dot */
   .status-dot {
     position: absolute;
@@ -789,9 +801,10 @@
       </div>
 
       <div class="card-cta">
-        <a href="cocoa-beach-fl-market-scout.html" class="cta-btn cocoa">
-          Open Full Report →
-        </a>
+        <div class="cta-row">
+          <a href="cocoa-beach-fl-market-scout.html" class="cta-btn cocoa sm">Market Scout →</a>
+          <span class="cta-btn disabled sm">Scout Dashboard<br><span style="font-size:10px;opacity:.7;">Coming Soon</span></span>
+        </div>
       </div>
     </div>
 
@@ -874,22 +887,23 @@
       </div>
 
       <div class="card-cta">
-        <a href="gulf-shores-scout-dashboard.html" class="cta-btn gulf">
-          Open Full Report →
-        </a>
+        <div class="cta-row">
+          <span class="cta-btn disabled sm">Market Scout<br><span style="font-size:10px;opacity:.7;">Coming Soon</span></span>
+          <a href="gulf-shores-scout-dashboard.html" class="cta-btn gulf sm">Scout Dashboard →</a>
+        </div>
       </div>
     </div>
 
     <!-- ── MANSFIELD ── -->
     <div class="market-card">
       <div class="card-header mansfield">
-        <div class="status-dot soon">
+        <div class="status-dot live">
           <div class="dot-pulse"></div>
-          Coming Soon
+          Scout Live
         </div>
-        <div class="card-location">Tarrant County · Texas</div>
-        <div class="card-title">Mansfield, TX</div>
-        <div class="card-subtitle">DFW Suburb · Mid-Term Rental / STR</div>
+        <div class="card-location">Richland County · Ohio</div>
+        <div class="card-title">Mansfield, OH</div>
+        <div class="card-subtitle">Mid-Ohio Hub · MTR + STR</div>
         <div class="score-row">
           <div class="score-ring">
             <svg width="72" height="72" viewBox="0 0 72 72">
@@ -905,7 +919,7 @@
           </div>
           <div class="score-meta">
             <div class="tier-badge tier-cp">Score TBD</div>
-            <div class="score-verdict">Full HTML report<br>coming soon.</div>
+            <div class="score-verdict">Scout dashboard live.<br>Market analysis coming soon.</div>
           </div>
         </div>
       </div>
@@ -914,18 +928,18 @@
         <div class="metrics-grid">
           <div class="metric-pill">
             <div class="mp-label">Market Type</div>
-            <div class="mp-val">DFW Suburb</div>
-            <div class="mp-sub">30 min to Dallas</div>
+            <div class="mp-val">Mid-Ohio Hub</div>
+            <div class="mp-sub">Columbus 75mi · Cleveland 80mi</div>
           </div>
           <div class="metric-pill">
             <div class="mp-label">Strategy</div>
             <div class="mp-val">MTR + STR</div>
-            <div class="mp-sub">Corporate demand</div>
+            <div class="mp-sub">Corporate / medical demand</div>
           </div>
           <div class="metric-pill">
-            <div class="mp-label">State Income Tax</div>
-            <div class="mp-val">0%</div>
-            <div class="mp-sub">Texas — no state tax</div>
+            <div class="mp-label">Entry Price</div>
+            <div class="mp-val">Lower</div>
+            <div class="mp-sub">vs. coastal markets</div>
           </div>
           <div class="metric-pill">
             <div class="mp-label">Insurance Risk</div>
@@ -934,32 +948,33 @@
           </div>
           <div class="metric-pill">
             <div class="mp-label">HOA Risk</div>
-            <div class="mp-val">High</div>
+            <div class="mp-val">Moderate</div>
             <div class="mp-sub">Verify STR rules</div>
           </div>
           <div class="metric-pill">
             <div class="mp-label">Appreciation</div>
             <div class="mp-val">Moderate</div>
-            <div class="mp-sub">DFW metro growth</div>
+            <div class="mp-sub">Ohio metro growth</div>
           </div>
         </div>
 
         <div class="key-insight mansfield">
-          <strong>The thesis:</strong> Low-risk CF play with no coastal insurance, no state income tax, and strong corporate/relocation rental demand from DFW job market. Pure CF rather than appreciation-led Total Return.
+          <strong>The thesis:</strong> Mid-Ohio market between Columbus and Cleveland. Corporate/medical MTR demand near Mansfield's hospital systems and manufacturing base. No coastal insurance exposure. Lower acquisition prices than coastal markets = stronger CF yield.
         </div>
 
         <div class="tags-row">
           <span class="tag purple">MTR Corp Demand</span>
-          <span class="tag green">✓ No State Tax</span>
+          <span class="tag green">✓ Low Insurance</span>
           <span class="tag amber">⚠ HOA verification critical</span>
-          <span class="tag green">Low Insurance</span>
+          <span class="tag green">✓ Lower Entry Price</span>
         </div>
       </div>
 
       <div class="card-cta">
-        <a href="scout-dashboard.html" class="cta-btn mansfield">
-          Open Full Report →
-        </a>
+        <div class="cta-row">
+          <span class="cta-btn disabled sm">Market Scout<br><span style="font-size:10px;opacity:.7;">Coming Soon</span></span>
+          <a href="scout-dashboard.html" class="cta-btn mansfield sm">Scout Dashboard →</a>
+        </div>
       </div>
     </div>
 
@@ -1033,8 +1048,8 @@
             <div class="market-name-cell">
               <div class="mni mansfield">🏘</div>
               <div>
-                <div>Mansfield, TX</div>
-                <div style="font-size:11px;font-weight:400;color:var(--lgray);">DFW Suburb</div>
+                <div>Mansfield, OH</div>
+                <div style="font-size:11px;font-weight:400;color:var(--lgray);">Mid-Ohio Hub</div>
               </div>
             </div>
           </td>
