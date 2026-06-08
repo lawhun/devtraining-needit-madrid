@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DEPRECATED — DO NOT LOAD THIS PLIST
+
+  This launchd agent was the original approach for scheduling the Cocoa Beach STR Scout.
+  It has been superseded by the Cowork scheduler skill, which has access to:
+    - AirROI MCP tools (mcp__airroi__*)
+    - Cowork artifacts (for daily report updates)
+    - First-party WebSearch (for current listings)
+    - The full Claude agent context
+
+  None of these are available to a headless `claude --print` subprocess launched by launchd.
+
+  Correct setup:
+    Skill:  ~/.claude/skills/cocoa-beach-str-scout/SKILL.md
+    Cron:   30 6 * * * ET  (6:30 AM, 30 min after Mansfield at 6:00 AM)
+    Setup:  mcp__scheduled-tasks__create_scheduled_task in any Claude session
+
+  See: skills/cocoa-beach-str-scout/SKILL.md in the devtraining-needit-madrid repo.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.strscout.cocoa-beach.DEPRECATED</string>
+    <key>Disabled</key>
+    <true/>
+</dict>
+</plist>
