@@ -21,20 +21,22 @@ mkdir -p "$SCOUT_DIR/logs"
 echo "→ Copying HTML files..."
 cp "$REPO_DIR/index.html" "$SCOUT_DIR/"
 cp "$REPO_DIR/cocoa-beach-fl-market-scout.html" "$SCOUT_DIR/"
-[ -f "$REPO_DIR/gulf-shores-al-market-scout.html" ] && cp "$REPO_DIR/gulf-shores-al-market-scout.html" "$SCOUT_DIR/"
-[ -f "$REPO_DIR/mansfield-tx-market-scout.html" ] && cp "$REPO_DIR/mansfield-tx-market-scout.html" "$SCOUT_DIR/"
+[ -f "$REPO_DIR/gulf-shores-scout-dashboard.html" ] && cp "$REPO_DIR/gulf-shores-scout-dashboard.html" "$SCOUT_DIR/"
+[ -f "$REPO_DIR/scout-dashboard.html" ]              && cp "$REPO_DIR/scout-dashboard.html"              "$SCOUT_DIR/"
 echo "   Done."
 
-# 3. Install HTTP server LaunchAgent (auto-starts at login, keeps running)
+# 3. Install custom server LaunchAgent (static files + /dismiss /undismiss endpoints)
 echo "→ Installing HTTP server LaunchAgent..."
-sed "s|STR_SCOUT_DIR|$SCOUT_DIR|g" "$REPO_DIR/launchd/com.strscout.server.plist" > "$LAUNCHD/com.strscout.server.plist"
+sed "s|STR_SCOUT_DIR|$SCOUT_DIR|g; s|SCRIPTS_DIR|$REPO_DIR/scripts|g" \
+    "$REPO_DIR/launchd/com.strscout.server.plist" > "$LAUNCHD/com.strscout.server.plist"
 launchctl unload "$LAUNCHD/com.strscout.server.plist" 2>/dev/null || true
 launchctl load "$LAUNCHD/com.strscout.server.plist"
 echo "   Done."
 
 # 4. Install daily Cocoa Beach scout LaunchAgent
 echo "→ Installing Cocoa Beach daily scout LaunchAgent..."
-sed "s|SCRIPTS_DIR|$REPO_DIR/scripts|g; s|HOME_DIR|$HOME|g" "$REPO_DIR/launchd/com.strscout.cocoa-beach.plist" > "$LAUNCHD/com.strscout.cocoa-beach.plist"
+sed "s|SCRIPTS_DIR|$REPO_DIR/scripts|g; s|HOME_DIR|$HOME|g" \
+    "$REPO_DIR/launchd/com.strscout.cocoa-beach.plist" > "$LAUNCHD/com.strscout.cocoa-beach.plist"
 launchctl unload "$LAUNCHD/com.strscout.cocoa-beach.plist" 2>/dev/null || true
 launchctl load "$LAUNCHD/com.strscout.cocoa-beach.plist"
 echo "   Done."
@@ -45,9 +47,12 @@ echo ""
 echo "=== SETUP COMPLETE ==="
 echo ""
 echo "Hub URL (phone + desktop):  http://$MAC_IP:8754/"
-echo "Cocoa Beach direct:         http://$MAC_IP:8754/cocoa-beach-fl-market-scout.html"
+echo "Cocoa Beach:                http://$MAC_IP:8754/cocoa-beach-fl-market-scout.html"
+echo "Gulf Shores:                http://$MAC_IP:8754/gulf-shores-scout-dashboard.html"
+echo "Mansfield:                  http://$MAC_IP:8754/scout-dashboard.html"
 echo ""
-echo "Cocoa Beach scout runs daily — check ~/STR-Scouts/logs/ for output."
+echo "Dismiss/undismiss endpoints: POST /dismiss and POST /undismiss are live."
+echo "Cocoa Beach scout runs daily at 6:30 AM — logs in ~/STR-Scouts/logs/"
 echo ""
 echo "Add to iPhone home screen:"
 echo "  Safari → open the hub URL → Share → 'Add to Home Screen' → 'STR Scout Hub'"

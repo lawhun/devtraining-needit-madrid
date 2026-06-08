@@ -8,13 +8,15 @@
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python3</string>
-        <string>-m</string>
-        <string>http.server</string>
+        <string>SCRIPTS_DIR/scout-server.py</string>
         <string>8754</string>
     </array>
 
-    <key>WorkingDirectory</key>
-    <string>STR_SCOUT_DIR</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>SCOUT_DIR</key>
+        <string>STR_SCOUT_DIR</string>
+    </dict>
 
     <!-- Start at login, restart if it crashes -->
     <key>RunAtLoad</key>
