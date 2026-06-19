@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Condo Hours Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+
+    header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
+    header p  { font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }
+
+    .status-bar {
+      background: white;
+      margin: 12px 12px 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.open  { background: #38a169; }
+    .dot.closed { background: #e53e3e; }
+    .dot.pulse { animation: pulse 1.5s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .status-bar span { font-size: 0.85rem; color: #4a5568; }
+    .status-bar strong { color: #1a202c; }
+
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #718096;
+      padding: 16px 16px 6px;
+    }
+
+    .card {
+      background: white;
+      margin: 0 12px 8px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px 10px;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .icon.blue   { background: #ebf8ff; }
+    .icon.green  { background: #f0fff4; }
+    .icon.purple { background: #faf5ff; }
+    .icon.orange { background: #fffaf0; }
+    .icon.red    { background: #fff5f5; }
+    .icon.teal   { background: #e6fffa; }
+
+    .card-title { flex: 1; }
+    .card-title h3  { font-size: 0.95rem; font-weight: 600; }
+    .card-title .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-top: 3px;
+    }
+    .badge.open   { background: #c6f6d5; color: #276749; }
+    .badge.closed { background: #fed7d7; color: #9b2c2c; }
+    .badge.soon   { background: #fefcbf; color: #744210; }
+
+    .chevron { color: #a0aec0; font-size: 0.8rem; transition: transform 0.2s; }
+    .card.expanded .chevron { transform: rotate(90deg); }
+
+    .card-body {
+      display: none;
+      padding: 0 16px 14px 64px;
+      border-top: 1px solid #f7fafc;
+    }
+    .card.expanded .card-body { display: block; }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 0.82rem;
+      border-bottom: 1px dashed #edf2f7;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day   { color: #4a5568; font-weight: 500; }
+    .hours-row .time  { color: #2d3748; }
+    .hours-row.today  { background: #f7fafc; margin: 0 -16px 0 -48px; padding: 5px 16px 5px 48px; border-radius: 4px; }
+    .hours-row.today .day  { color: #2b6cb0; font-weight: 700; }
+    .hours-row.today .time { color: #2b6cb0; font-weight: 700; }
+
+    .note {
+      font-size: 0.75rem;
+      color: #718096;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #edf2f7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 0.72rem;
+      color: #a0aec0;
+    }
+
+    .emergency {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      border-radius: 12px;
+      margin: 0 12px 8px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .emergency .icon { background: #fff5f5; font-size: 1.2rem; }
+    .emergency .info { flex: 1; }
+    .emergency .info h4 { font-size: 0.85rem; font-weight: 700; color: #c53030; }
+    .emergency .info p  { font-size: 0.75rem; color: #742a2a; margin-top: 2px; }
+    .emergency a { font-size: 0.85rem; font-weight: 700; color: #c53030; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🏢 Condo Hours Dashboard</h1>
+  <p id="current-datetime"></p>
+</header>
+
+<div class="status-bar">
+  <div class="dot open pulse" id="status-dot"></div>
+  <span id="status-text">Loading current status…</span>
+</div>
+
+<div class="section-title">Amenities</div>
+
+<!-- Pool -->
+<div class="card" id="card-pool">
+  <div class="card-header" onclick="toggle('card-pool')">
+    <div class="icon blue">🏊</div>
+    <div class="card-title">
+      <h3>Pool &amp; Hot Tub</h3>
+      <span class="badge" id="badge-pool">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">8:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">6:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">6:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">6:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">6:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">6:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">8:00 AM – 11:00 PM</span></div>
+    <p class="note">Hot tub closes 30 min before pool. No lifeguard on duty.</p>
+  </div>
+</div>
+
+<!-- Fitness -->
+<div class="card" id="card-gym">
+  <div class="card-header" onclick="toggle('card-gym')">
+    <div class="icon green">🏋️</div>
+    <div class="card-title">
+      <h3>Fitness Center</h3>
+      <span class="badge" id="badge-gym">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">5:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">5:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">5:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">5:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">5:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <p class="note">Key fob access required after staffed hours.</p>
+  </div>
+</div>
+
+<!-- Clubhouse -->
+<div class="card" id="card-clubhouse">
+  <div class="card-header" onclick="toggle('card-clubhouse')">
+    <div class="icon purple">🎉</div>
+    <div class="card-title">
+      <h3>Clubhouse / Lounge</h3>
+      <span class="badge" id="badge-clubhouse">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">9:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">9:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">9:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">9:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">9:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">9:00 AM – 11:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">9:00 AM – 11:00 PM</span></div>
+    <p class="note">Reserve for private events via the management office.</p>
+  </div>
+</div>
+
+<!-- Laundry -->
+<div class="card" id="card-laundry">
+  <div class="card-header" onclick="toggle('card-laundry')">
+    <div class="icon teal">🫧</div>
+    <div class="card-title">
+      <h3>Laundry Room</h3>
+      <span class="badge" id="badge-laundry">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">7:00 AM – 10:00 PM</span></div>
+    <p class="note">Last wash cycle must start by 9:30 PM.</p>
+  </div>
+</div>
+
+<div class="section-title">Office &amp; Services</div>
+
+<!-- Management Office -->
+<div class="card" id="card-office">
+  <div class="card-header" onclick="toggle('card-office')">
+    <div class="icon orange">🏠</div>
+    <div class="card-title">
+      <h3>Management Office</h3>
+      <span class="badge" id="badge-office">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">Closed</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">9:00 AM – 5:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">9:00 AM – 5:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">9:00 AM – 5:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">9:00 AM – 5:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">9:00 AM – 4:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">Closed</span></div>
+    <p class="note">Call (555) 867-5309 for after-hours assistance.</p>
+  </div>
+</div>
+
+<!-- Package Room -->
+<div class="card" id="card-packages">
+  <div class="card-header" onclick="toggle('card-packages')">
+    <div class="icon blue">📦</div>
+    <div class="card-title">
+      <h3>Package Room</h3>
+      <span class="badge" id="badge-packages">–</span>
+    </div>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="hours-row" data-day="0"><span class="day">Sunday</span><span class="time">8:00 AM – 8:00 PM</span></div>
+    <div class="hours-row" data-day="1"><span class="day">Monday</span><span class="time">7:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="2"><span class="day">Tuesday</span><span class="time">7:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="3"><span class="day">Wednesday</span><span class="time">7:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="4"><span class="day">Thursday</span><span class="time">7:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="5"><span class="day">Friday</span><span class="time">7:00 AM – 9:00 PM</span></div>
+    <div class="hours-row" data-day="6"><span class="day">Saturday</span><span class="time">8:00 AM – 8:00 PM</span></div>
+    <p class="note">Key fob access only. Packages held for 5 business days.</p>
+  </div>
+</div>
+
+<div class="section-title">Emergency Contact</div>
+
+<div class="emergency">
+  <div>🚨</div>
+  <div class="info">
+    <h4>24/7 Emergency Maintenance</h4>
+    <p>Water leaks, power outages, fire, security</p>
+  </div>
+  <a href="tel:5558675309">Call</a>
+</div>
+
+<footer>
+  Tap any row to expand hours &nbsp;•&nbsp; Updated daily
+</footer>
+
+<script>
+  const HOURS = {
+    pool:      [[8,22],[6,22],[6,22],[6,22],[6,22],[6,23],[8,23]],
+    gym:       [[7,22],[5,23],[5,23],[5,23],[5,23],[5,23],[7,22]],
+    clubhouse: [[9,21],[9,22],[9,22],[9,22],[9,22],[9,23],[9,23]],
+    laundry:   [[7,22],[7,22],[7,22],[7,22],[7,22],[7,22],[7,22]],
+    office:    [[null,null],[9,17],[9,17],[9,17],[9,17],[9,16],[null,null]],
+    packages:  [[8,20],[7,21],[7,21],[7,21],[7,21],[7,21],[8,20]],
+  };
+
+  function fmt(h) {
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr   = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    return `${hr}:00 ${ampm}`;
+  }
+
+  function isOpen(schedule, now) {
+    const day   = now.getDay();
+    const hour  = now.getHours() + now.getMinutes() / 60;
+    const range = schedule[day];
+    if (!range[0]) return false;
+    return hour >= range[0] && hour < range[1];
+  }
+
+  function toggle(id) {
+    document.getElementById(id).classList.toggle('expanded');
+  }
+
+  function update() {
+    const now = new Date();
+    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const opts = { weekday:'long', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' };
+    document.getElementById('current-datetime').textContent = now.toLocaleString('en-US', opts);
+
+    const today = now.getDay();
+
+    // Highlight today's row in each card
+    document.querySelectorAll('.hours-row').forEach(r => {
+      r.classList.toggle('today', parseInt(r.dataset.day) === today);
+    });
+
+    // Badge each amenity
+    let anyOpen = false;
+    Object.entries(HOURS).forEach(([key, sched]) => {
+      const open  = isOpen(sched, now);
+      if (open) anyOpen = true;
+      const badge = document.getElementById(`badge-${key}`);
+      if (badge) {
+        badge.textContent = open ? 'Open Now' : 'Closed';
+        badge.className   = `badge ${open ? 'open' : 'closed'}`;
+      }
+    });
+
+    // Top status bar
+    const dot  = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    if (anyOpen) {
+      dot.className  = 'dot open pulse';
+      text.innerHTML = '<strong>Some amenities are open</strong> right now';
+    } else {
+      dot.className  = 'dot closed';
+      text.innerHTML = '<strong>All amenities closed</strong> — check hours below';
+    }
+  }
+
+  update();
+  setInterval(update, 60000);
+</script>
+</body>
+</html>
